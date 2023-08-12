@@ -1,0 +1,15 @@
+export const movies = [
+  { name: "starwar", id: 0, source: "/starwar.jpg" },
+  { name: "marvel", id: 1, source: "/marvel.jpg" },
+  { name: "titanic", id: 2, source: "/titanic.png" },
+  { name: "flash", id: 3, source: "/speed.jpg" },
+  { name: "joker", id: 4, source: "/joker.jpg" },
+  { name: "twilight", id: 5, source: "/twilight.jpg" },
+  { name: "Tomcruise", id: 6, source: "/tomcruise.jpg" },
+  { name: "hobbit", id: 7, source: "/hobbit.jpg" },
+  { name: "deadpool", id: 8, source: "/deadpool.png" },
+  { name: "intution", id: 9, source: "/horror.jpg" },
+  { name: "A quite place", id: 10, source: "/inception.jpg" },
+  { name: "matrix", id: 11, source: "/matrix.jpg" },
+  { name: "interstellar", id: 12, source: "/interCover.jpg" },
+];
