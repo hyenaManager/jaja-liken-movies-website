@@ -5,15 +5,23 @@ import "./index.css";
 import Navbar from "./components/navbar";
 import StatusMovie from "./components/selectedMovie";
 import ApiMovies from "./components/selection";
+import { fetchData, findData } from "./components/getApi";
+import axios from "axios";
 
 function App() {
-  const [movie, setMovie] = useState(null);
+  const [movie, setMovieId] = useState(null);
+  const [fetchedData, setFetchedData] = useState(null);
+  useEffect(() => {
+    setFetchedData(findData(movie));
+  }, []);
+  useEffect(() => {
+    setMovieId(fetchData());
+  }, []);
   const link = "https://image.tmdb.org/t/p/original/";
-  const defaultSrc = "rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg";
 
   const ref = useRef(null);
   function movieStatus(src) {
-    setMovie(src); //change the movie src
+    setMovieId(src.id); //change the movie id
   }
   useEffect(() => {
     if (movie !== null) {
@@ -26,18 +34,15 @@ function App() {
   return (
     <>
       <div
-        key={movie === null ? "movie" : movie.original_title}
+        key={fetchedData}
         className=" relative bg-cover bg-center bg-no-repeat p-3"
         style={{
-          backgroundImage:
-            movie === null
-              ? `url(${link + defaultSrc})`
-              : `url(${link + movie.backdrop_path})`,
+          backgroundImage: `url(${link + fetchedData?.backdrop_path})`,
         }}
       >
         <Navbar />
         <div className="divisionOne mt-14">
-          <StatusMovie movie={movie} statusRef={ref} />
+          <StatusMovie movie={fetchedData?.results?.[0]?.id} statusRef={ref} />
         </div>
       </div>
       <main className=" bg-slate-800 p-3">

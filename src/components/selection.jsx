@@ -4,32 +4,17 @@ import { useEffect, useState } from "react";
 import { movies } from "./datas";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { fetchData } from "./getApi";
 
-export default function ApiMovies({ movie, changeSrc }) {
+export default function ApiMovies({ changeSrc }) {
   const [fetchedData, setFetchedData] = useState(null);
   useEffect(() => {
-    fetchData();
+    async function fetch() {
+      const data = await fetchData();
+      setFetchedData(data);
+    }
   }, []);
-  const fetchData = async () => {
-    const url =
-      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZWY1ZTkwNGVkNWNkNTZiYzg3NTRmZjIyZDA4MmQ5NCIsInN1YiI6IjY0ZDcxZDY3YjZjMjY0MTE1NzUzNjIyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nOaUcA7pG53bkWSCcnxRYJRFTbY95LGjLKl0cux84S4",
-      },
-    };
-
-    axios(url, options)
-      .then((response) => {
-        setFetchedData(response.data);
-      })
-      .catch((error) => {
-        console.error("error:", error);
-      });
-  };
+  console.log(fetchData);
   const moviesList = fetchedData?.results?.map((movie) => (
     <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
   ));
