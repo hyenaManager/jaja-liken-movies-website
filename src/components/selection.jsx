@@ -1,11 +1,37 @@
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { movies } from "./datas";
+import axios from "axios";
+import { motion } from "framer-motion";
 
-export default function MovieList({ changeSrc }) {
-  const moviesList = movies.map((movie) => (
-    <Movie movie={movie} key={movie.name} changeSrc={changeSrc} />
+export default function ApiMovies({ movie, changeSrc }) {
+  const [fetchedData, setFetchedData] = useState(null);
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    const url =
+      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZWY1ZTkwNGVkNWNkNTZiYzg3NTRmZjIyZDA4MmQ5NCIsInN1YiI6IjY0ZDcxZDY3YjZjMjY0MTE1NzUzNjIyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nOaUcA7pG53bkWSCcnxRYJRFTbY95LGjLKl0cux84S4",
+      },
+    };
+
+    axios(url, options)
+      .then((response) => {
+        setFetchedData(response.data);
+      })
+      .catch((error) => {
+        console.error("error:", error);
+      });
+  };
+  const moviesList = fetchedData?.results?.map((movie) => (
+    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
   ));
   return (
     <>
@@ -24,12 +50,12 @@ function Movie({ movie, changeSrc }) {
     >
       {/* blah blah */}
       <img
-        src={movie.source}
-        alt={movie.name}
+        src={"https://image.tmdb.org/t/p/original" + movie.poster_path}
+        alt={movie.original_title}
         className="rounded-md w-78 h-103 object-cover "
       />
       <span className="text-lg text-white text-start capitalize">
-        {movie.name}
+        {movie.original_title}
       </span>
       {/* check movie button */}
       {isHover && (

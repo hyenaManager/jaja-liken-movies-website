@@ -4,11 +4,12 @@ import viteLogo from "/vite.svg";
 import "./index.css";
 import Navbar from "./components/navbar";
 import StatusMovie from "./components/selectedMovie";
-import MovieList from "./components/selection";
-import { movies } from "./components/datas";
+import ApiMovies from "./components/selection";
 
 function App() {
-  const [movie, setMovie] = useState(movies[0]);
+  const [movie, setMovie] = useState(null);
+  const link = "https://image.tmdb.org/t/p/original/";
+  const defaultSrc = "rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg";
 
   const ref = useRef(null);
   function movieStatus(src) {
@@ -24,14 +25,23 @@ function App() {
   }, [movie]);
   return (
     <>
-      <div className=" relative bg-gradient-to-r from-slate-600 via-slate-800 to-slate-800 p-3">
+      <div
+        key={movie === null ? "movie" : movie.original_title}
+        className=" relative bg-cover bg-center bg-no-repeat p-3"
+        style={{
+          backgroundImage:
+            movie === null
+              ? `url(${link + defaultSrc})`
+              : `url(${link + movie.backdrop_path})`,
+        }}
+      >
         <Navbar />
         <div className="divisionOne mt-14">
           <StatusMovie movie={movie} statusRef={ref} />
         </div>
       </div>
       <main className=" bg-slate-800 p-3">
-        <MovieList changeSrc={movieStatus} />
+        <ApiMovies changeSrc={movieStatus} />
       </main>
     </>
   );

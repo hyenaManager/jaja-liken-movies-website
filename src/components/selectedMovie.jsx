@@ -10,21 +10,24 @@ import { useState } from "react";
 import { availableDates } from "./datas";
 
 export default function StatusMovie({ movie, statusRef }) {
+  const defaultSrc = "rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg";
+  const link = "https://image.tmdb.org/t/p/original/";
   return (
     <>
       <div className=" ml-10 flex flex-col font-kanit" ref={statusRef}>
         <div className=" flex justify-start ">
           {/* movie img */}
           <img
-            src={movie.source}
+            key={movie === null ? "movie" : movie}
+            src={movie === null ? link + defaultSrc : link + movie.poster_path}
             className=" w-80 h-96 object-cover bg-slate-400 mr-10 rounded-lg"
             alt="instetallar"
           />
           {/* movie details */}
-          <div className="flex flex-col max-w-sm h-96 text-slate-50 ">
-            <span className="  mb-3">2017</span>
+          <div className="flex flex-col h-96 text-slate-50 ">
+            <span className="  mb-3">{movie.release_date}</span>
             <h2 className=" text-4xl mb-3 font-bold drop-shadow-md capitalize">
-              {movie.name}
+              {movie !== null ? movie.original_title : "The Flash"}
             </h2>
             {/* about movie */}
             <div className="flex  mb-3 text-lg">
@@ -35,11 +38,7 @@ export default function StatusMovie({ movie, statusRef }) {
               </ul>
             </div>
             {/* short story */}
-            <p className=" mb-3">
-              When Earth becomes uninhabitable in the future, a farmer and
-              ex-NASA pilot, Joseph Cooper, is tasked to pilot a spacecraft,
-              along with a team of researchers, to find a new planet for humans.
-            </p>
+            <p className=" mb-3 text-lg text-slate-100">{movie.overview}</p>
             {/* movies rating and time */}
             <ul className=" list-none flex mb-3 text-lg">
               <li className=" mr-3 flex justify-start items-center">
@@ -55,7 +54,7 @@ export default function StatusMovie({ movie, statusRef }) {
               </li>
               <li className=" mr-3 flex justify-start items-center">
                 <FontAwesomeIcon icon={faCircle} className=" text-red-700" />
-                <span>imdb 9.1/10</span>
+                <span>liken rate {movie.vote_average}/10</span>
               </li>
             </ul>
             {/* option mode */}
