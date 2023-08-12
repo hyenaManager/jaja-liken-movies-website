@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { availableDates } from "./datas";
 
 export default function StatusMovie({ movie, statusRef }) {
   return (
@@ -81,13 +82,13 @@ export default function StatusMovie({ movie, statusRef }) {
         <div className=" flex flex-col">
           <span className=" text-white">CHOOSE DATE: </span>
           {/* selections of dates */}
-          <ChooseDate />
+          <DateTime option={"date"} />
         </div>
         {/* choose times */}
         <div className=" flex flex-col">
           <span className=" text-white">CHOOSE DATE: </span>
           {/* selections of times */}
-          <ChooseDate />
+          <DateTime option={"time"} />
         </div>
         {/* buy ticket button */}
         <button className=" mr-5 p-2 w-32 h-12 pr-4 pl-4 flex items-center hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg">
@@ -98,22 +99,11 @@ export default function StatusMovie({ movie, statusRef }) {
   );
 }
 
-function ChooseDate() {
+function DateTime({ option }) {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(4);
   const [selectedDate, setSelectedDate] = useState("none");
-  const availableDates = [
-    { id: 0, month: "Jun", day: "Sunday", date: "1st" },
-    { id: 1, month: "Aug", day: "Tuesday", date: "15th" },
-    { id: 2, month: "Mar", day: "Thursday", date: "8th" },
-    { id: 3, month: "Nov", day: "Monday", date: "21st" },
-    { id: 4, month: "Apr", day: "Friday", date: "16th" },
-    { id: 5, month: "Sep", day: "Wednesday", date: "30th" },
-    { id: 6, month: "Dec", day: "Saturday", date: "12th" },
-    { id: 7, month: "Jan", day: "Tuesday", date: "4th" },
-    { id: 8, month: "May", day: "Thursday", date: "27th" },
-    { id: 9, month: "Oct", day: "Sunday", date: "23rd" },
-  ];
+
   function reduce() {
     if (min !== 0) {
       setMin(min - 1);
@@ -127,27 +117,50 @@ function ChooseDate() {
     }
   }
 
-  const pagList = availableDates.map((avaDate, index) => {
-    if (min <= index && index <= max) {
-      return (
-        <button
-          onClick={() => setSelectedDate(avaDate.id)}
-          className={
-            " flex flex-col justify-center items-center text-slate-200 p-1 " +
-            (selectedDate === avaDate.id && "border-b-2 border-b-red-600")
+  const pagList =
+    option === "date"
+      ? availableDates.map((avaDate, index) => {
+          if (min <= index && index <= max) {
+            return (
+              <button
+                onClick={() => setSelectedDate(avaDate.id)}
+                className={
+                  " flex flex-col justify-center items-center text-slate-200 p-1 " +
+                  (selectedDate === avaDate.id && "border-b-2 border-b-red-600")
+                }
+                key={avaDate.id}
+              >
+                <span className=" text-slate-400 text-sm">
+                  {avaDate.month.toUpperCase() + " " + avaDate.date}
+                </span>
+                <span className=" uppercase">{avaDate.day}</span>
+              </button>
+            );
+          } else {
+            return;
           }
-          key={avaDate.id}
-        >
-          <span className=" text-slate-400 text-sm">
-            {avaDate.month.toUpperCase() + " " + avaDate.date}
-          </span>
-          <span className=" uppercase">{avaDate.day}</span>
-        </button>
-      );
-    } else {
-      return;
-    }
-  });
+        })
+      : availableDates.map((avaDate, index) => {
+          if (min <= index && index <= max) {
+            return (
+              <button
+                onClick={() => setSelectedDate(avaDate.id)}
+                className={
+                  " flex flex-col justify-center items-center text-slate-200 p-1 " +
+                  (selectedDate === avaDate.id && "border-b-2 border-b-red-600")
+                }
+                key={avaDate.id}
+              >
+                <span className=" text-slate-400 text-sm">
+                  {avaDate.month.toUpperCase() + " " + avaDate.date}
+                </span>
+                <span className=" uppercase">{avaDate.day}</span>
+              </button>
+            );
+          } else {
+            return;
+          }
+        });
   return (
     <>
       <div className=" flex ">

@@ -11,5 +11,16 @@ export const movies = [
   { name: "intution", id: 9, source: "/horror.jpg" },
   { name: "A quite place", id: 10, source: "/inception.jpg" },
   { name: "matrix", id: 11, source: "/matrix.jpg" },
-  { name: "interstellar", id: 12, source: "/interCover.jpg" },
+];
+export const availableDates = [
+  { id: 0, month: "Jun", day: "Sunday", date: "1st" },
+  { id: 1, month: "Aug", day: "Tuesday", date: "15th" },
+  { id: 2, month: "Mar", day: "Thursday", date: "8th" },
+  { id: 3, month: "Nov", day: "Monday", date: "21st" },
+  { id: 4, month: "Apr", day: "Friday", date: "16th" },
+  { id: 5, month: "Sep", day: "Wednesday", date: "30th" },
+  { id: 6, month: "Dec", day: "Saturday", date: "12th" },
+  { id: 7, month: "Jan", day: "Tuesday", date: "4th" },
+  { id: 8, month: "May", day: "Thursday", date: "27th" },
+  { id: 9, month: "Oct", day: "Sunday", date: "23rd" },
 ];
