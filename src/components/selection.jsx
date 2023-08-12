@@ -22,6 +22,7 @@ function Movie({ movie, changeSrc }) {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
+      {/* blah blah */}
       <img
         src={movie.source}
         alt={movie.name}
