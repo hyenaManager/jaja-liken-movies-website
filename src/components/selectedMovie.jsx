@@ -8,22 +8,22 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export default function StatusMovie({ movieSrc }) {
+export default function StatusMovie({ movie, statusRef }) {
   return (
     <>
-      <div className=" ml-10 flex flex-col font-kanit">
+      <div className=" ml-10 flex flex-col font-kanit" ref={statusRef}>
         <div className=" flex justify-start ">
           {/* movie img */}
           <img
-            src={movieSrc}
+            src={movie.source}
             className=" w-80 h-96 object-cover bg-slate-400 mr-10 rounded-lg"
             alt="instetallar"
           />
           {/* movie details */}
           <div className="flex flex-col max-w-sm h-96 text-slate-50 ">
             <span className="  mb-3">2017</span>
-            <h2 className=" text-4xl mb-3 font-bold drop-shadow-md">
-              Intestallar reunion
+            <h2 className=" text-4xl mb-3 font-bold drop-shadow-md capitalize">
+              {movie.name}
             </h2>
             {/* about movie */}
             <div className="flex  mb-3 text-lg">
