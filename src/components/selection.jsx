@@ -1,6 +1,7 @@
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { movies } from "./datas";
 
 export default function MovieList({ changeSrc }) {
   const moviesList = movies.map((movie) => (
@@ -32,7 +33,7 @@ function Movie({ movie, changeSrc }) {
       {/* check movie button */}
       {isHover && (
         <button
-          onClick={() => changeSrc(movie.source)}
+          onClick={() => changeSrc(movie)}
           className={
             "p-1 pr-2 pl-2 bg-red-700 text-white rounded-3xl text-md absolute top-3 right-3 "
           }
@@ -43,18 +44,3 @@ function Movie({ movie, changeSrc }) {
     </div>
   );
 }
-
-const movies = [
-  { name: "starwar", id: 0, source: "/starwar.jpg" },
-  { name: "marvel", id: 1, source: "/marvel.jpg" },
-  { name: "titanic", id: 2, source: "/titanic.png" },
-  { name: "flash", id: 3, source: "/speed.jpg" },
-  { name: "joker", id: 4, source: "/joker.jpg" },
-  { name: "twilight", id: 5, source: "/twilight.jpg" },
-  { name: "Tomcruise", id: 6, source: "/tomcruise.jpg" },
-  { name: "hobbit", id: 7, source: "/hobbit.jpg" },
-  { name: "deadpool", id: 8, source: "/deadpool.png" },
-  { name: "intution", id: 9, source: "/horror.jpg" },
-  { name: "A quite place", id: 10, source: "/inception.jpg" },
-  { name: "matrix", id: 11, source: "/matrix.jpg" },
-];
