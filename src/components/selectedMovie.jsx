@@ -30,7 +30,11 @@ export default function StatusMovie({ movie, statusRef }) {
           />
           {/* movie details */}
           <div className="flex flex-col h-96 text-slate-50 ">
+<<<<<<< HEAD
             <span className="  mb-3">{fetchData?.release_date}</span>
+=======
+            <span className="  mb-3">{movie?.release_date}</span>
+>>>>>>> apiMode
             <h2 className=" text-4xl mb-3 font-bold drop-shadow-md capitalize">
               {fetchData?.original_title}
             </h2>
@@ -43,9 +47,13 @@ export default function StatusMovie({ movie, statusRef }) {
               </ul>
             </div>
             {/* short story */}
+<<<<<<< HEAD
             <p className=" mb-3 text-lg text-slate-100">
               {fetchData?.overview}
             </p>
+=======
+            <p className=" mb-3 text-lg text-slate-100">{movie?.overview}</p>
+>>>>>>> apiMode
             {/* movies rating and time */}
             <ul className=" list-none flex mb-3 text-lg">
               <li className=" mr-3 flex justify-start items-center">
@@ -61,7 +69,11 @@ export default function StatusMovie({ movie, statusRef }) {
               </li>
               <li className=" mr-3 flex justify-start items-center">
                 <FontAwesomeIcon icon={faCircle} className=" text-red-700" />
+<<<<<<< HEAD
                 <span>liken rate {fetchData?.vote_average}/10</span>
+=======
+                <span>liken rate {movie?.vote_average}/10</span>
+>>>>>>> apiMode
               </li>
             </ul>
             {/* option mode */}
