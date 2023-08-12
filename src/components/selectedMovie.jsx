@@ -6,16 +6,11 @@ import {
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { availableDates } from "./datas";
-import { fetchData, findData } from "./getApi";
-import axios from "axios";
 
 export default function StatusMovie({ movie, statusRef }) {
-  const [fetchedData, setFetchedData] = useState(null);
-  useEffect(() => {
-    setFetchedData(findData(movie));
-  }, []);
+  const defaultSrc = "rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg";
   const link = "https://image.tmdb.org/t/p/original/";
   return (
     <>
@@ -23,17 +18,16 @@ export default function StatusMovie({ movie, statusRef }) {
         <div className=" flex justify-start ">
           {/* movie img */}
           <img
-            key={movie}
-            src={fetchedData?.poster_path}
+            key={movie === null ? "movie" : movie}
+            src={movie === null ? link + defaultSrc : link + movie.poster_path}
             className=" w-80 h-96 object-cover bg-slate-400 mr-10 rounded-lg"
             alt="instetallar"
           />
           {/* movie details */}
           <div className="flex flex-col h-96 text-slate-50 ">
             <span className="  mb-3">{movie?.release_date}</span>
-
             <h2 className=" text-4xl mb-3 font-bold drop-shadow-md capitalize">
-              {fetchData?.original_title}
+              {movie !== null ? movie.original_title : "The Flash"}
             </h2>
             {/* about movie */}
             <div className="flex  mb-3 text-lg">
