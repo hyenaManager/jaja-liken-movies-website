@@ -5,7 +5,10 @@ export default {
     extend: {
       fontFamily:{
       'kanit':'Kanit',
-      'head':'Chakra Petch'
+      'head':'Chakra Petch',
+      'detail':'Rubik Vinyl',
+      'borderText':'Jacques Francois Shadow',
+      'pureStyle':'Metal Mania'
     },
     backgroundImage:{
       'headCover':"url('/blackholeL.png')"

@@ -1,9 +1,7 @@
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { movies } from "./datas";
 import axios from "axios";
-import { motion } from "framer-motion";
 
 export default function ApiMovies({ movie, changeSrc }) {
   const [fetchedData, setFetchedData] = useState(null);
@@ -35,8 +33,84 @@ export default function ApiMovies({ movie, changeSrc }) {
   ));
   return (
     <>
-      <div className=" grid grid-cols-4 gap-8 font-head">{moviesList}</div>
+      <SelectionHead />
+      <div className=" grid grid-cols-4 gap-8 font-head p-3">{moviesList}</div>
     </>
+  );
+}
+function SelectionHead() {
+  return (
+    <>
+      <div className="flex justify-between p-3 font-kanit">
+        <ul className="flex justify-between list-none text-white">
+          <li className=" pl-9 cursor-pointer">
+            <SelectionHeadDropdown name={"By year"} />
+          </li>
+          <li className=" pl-9 cursor-pointer">
+            <SelectionHeadDropdown name={"By catagory"} />
+          </li>
+          <li className=" pl-9 cursor-pointer">
+            <SelectionHeadDropdown name={"Released"} />
+          </li>
+        </ul>
+        <div className="flex justify-center">
+          <input type="text" className="text" />
+          <FontAwesomeIcon icon={faSearch} />
+        </div>
+      </div>
+    </>
+  );
+}
+
+function SelectionHeadDropdown({ name }) {
+  const [hidden, setHidden] = useState(true);
+  return (
+    <div className="relative inline-block text-left z-20">
+      <button
+        onClick={(e) => {
+          setHidden(!hidden);
+          e.stopPropagation();
+        }}
+        type="button"
+        className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        id="options-menu"
+        aria-expanded="true"
+        aria-haspopup="true"
+      >
+        {name}
+      </button>
+
+      <div
+        className={
+          " origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 " +
+          (hidden ? " hidden" : null)
+        }
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="options-menu"
+      >
+        <div className="py-1" role="none">
+          <a
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            role="menuitem"
+          >
+            2020
+          </a>
+          <a
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            role="menuitem"
+          >
+            2020
+          </a>
+          <a
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            role="menuitem"
+          >
+            2020
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
 
