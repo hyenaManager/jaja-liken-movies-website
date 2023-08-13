@@ -48,7 +48,7 @@ export default function StatusMovie({ movieId, statusRef }) {
   return (
     <>
       <div
-        className=" bg-cover bg-center bg-no-repeat pt-16 rounded-md border-2"
+        className=" bg-cover bg-center bg-no-repeat pt-16 rounded-md "
         style={{
           backgroundImage: `url(${link + selectedMovie?.backdrop_path})`,
         }}

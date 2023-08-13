@@ -51,7 +51,7 @@ function App() {
   }, [fetchedMovies]);
   return (
     <>
-      <div key={movieId} className=" relative p-3">
+      <div key={movieId} className=" relative p-3 bg-red-700">
         <Navbar />
 
         <StatusMovie
