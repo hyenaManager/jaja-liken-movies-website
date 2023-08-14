@@ -59,7 +59,7 @@ function App() {
   }, [fetchedMovies]);
   return (
     <>
-      <div key={movieId} className=" pt-3 pr-3 pl-3 bg-red-700" ref={headRef}>
+      <div key={movieId} className=" pt-3  bg-red-700" ref={headRef}>
         <Navbar />
         <Head movieId={movieId || fetchedMovies?.results?.[0]?.id} />
       </div>

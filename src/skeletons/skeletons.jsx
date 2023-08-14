@@ -59,7 +59,7 @@ function Flashing() {
       <motion.div
         initial={{ x: "-100vw", skewX: 2 }}
         animate={{ x: "100vw", skewX: 2 }}
-        transition={{ repeat: Infinity, duration: 1.4 }}
+        transition={{ repeat: Infinity, duration: 2 }}
         className=" absolute w-full h-full top-0 left-0"
         style={{ backgroundColor: "rgb(203 ,213 ,220,0.2)" }}
       ></motion.div>
