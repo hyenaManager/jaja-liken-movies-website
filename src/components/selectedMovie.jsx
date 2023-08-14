@@ -100,13 +100,13 @@ export default function Head({ movieId }) {
                 </ul>
               </div>
               {/* short story */}
-              <p className=" mb-3 text-xl drop-shadow-m6 text-slate-100 font-pureStyle">
+              <div className=" mb-3 text-xl drop-shadow-m6 text-slate-100 font-pureStyle">
                 {selectedMovie?.overview}
                 {!selectedMovie && <SkeletonBar percent={"800px"} />}
                 {!selectedMovie && <SkeletonBar percent={"800px"} />}
                 {!selectedMovie && <SkeletonBar percent={"600px"} />}
                 {!selectedMovie && <SkeletonBar percent={"400px"} />}
-              </p>
+              </div>
               {/* movies rating and time */}
               <ul className=" list-none flex mb-3 text-lg">
                 <li className=" mr-3 flex justify-start items-center">

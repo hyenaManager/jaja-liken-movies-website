@@ -1,6 +1,6 @@
 import { faPlay, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 export default function ApiMovies({ movie, changeSrc }) {
@@ -10,6 +10,8 @@ export default function ApiMovies({ movie, changeSrc }) {
     year: null,
     catagories: null,
   });
+  //for console
+  const imgRef = useRef();
   //filtering movie by type
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function ApiMovies({ movie, changeSrc }) {
       });
   };
   const moviesList = fetchedData?.results?.map((movie) => (
-    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
+    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} imgRef={imgRef} />
   ));
   return (
     <>
@@ -113,7 +115,7 @@ function SelectionHead({ filteredType }) {
 function SelectionHeadDropdown({ name, list, filteredType }) {
   const [hidden, setHidden] = useState(true);
   return (
-    <div className="relative inline-block text-left z-20">
+    <div className="relative inline-block text-left z-20" key={name}>
       <button
         onClick={(e) => {
           setHidden(!hidden);
@@ -140,6 +142,7 @@ function SelectionHeadDropdown({ name, list, filteredType }) {
         <div className="py-1" role="none">
           {list.map((data) => (
             <a
+              key={data}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
             >
@@ -152,8 +155,9 @@ function SelectionHeadDropdown({ name, list, filteredType }) {
   );
 }
 
-function Movie({ movie, changeSrc }) {
+function Movie({ movie, changeSrc, imgRef }) {
   const [isHover, setIsHover] = useState(false);
+  console.log(imgRef.current);
   return (
     <div
       className=" flex flex-col relative"
@@ -162,6 +166,7 @@ function Movie({ movie, changeSrc }) {
     >
       {/* blah blah */}
       <img
+        ref={imgRef}
         src={"https://image.tmdb.org/t/p/original" + movie.poster_path}
         alt={movie.original_title}
         className="rounded-md "
