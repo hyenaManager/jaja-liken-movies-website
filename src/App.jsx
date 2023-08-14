@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./index.css";
 import Navbar from "./components/navbar";
-import StatusMovie from "./components/selectedMovie";
+import Head from "./components/selectedMovie";
 import ApiMovies from "./components/selection";
 import axios from "axios";
 
@@ -11,10 +11,18 @@ function App() {
   const [fetchedMovies, setFetchedMovies] = useState(null);
   const [movieId, setMovieId] = useState(null);
   const link = "https://image.tmdb.org/t/p/original/";
-  const ref = useRef(null);
+  const headRef = useRef(null);
   function movieStatus(src) {
     setMovieId(src.id); //change the movie src
   }
+  useEffect(() => {
+    if (movieId !== null) {
+      headRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [movieId]);
   //for the first time movieId
   useEffect(() => {
     fetchData();
@@ -43,7 +51,7 @@ function App() {
   // whenever user click check blink to top
   useEffect(() => {
     if (fetchedMovies !== null) {
-      ref.current?.scrollIntoView({
+      headRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
@@ -51,15 +59,11 @@ function App() {
   }, [fetchedMovies]);
   return (
     <>
-      <div key={movieId} className=" relative p-3 bg-red-700">
+      <div key={movieId} className=" pt-3 pr-3 pl-3 bg-red-700" ref={headRef}>
         <Navbar />
-
-        <StatusMovie
-          movieId={movieId || fetchedMovies?.results?.[0]?.id}
-          statusRef={ref}
-        />
+        <Head movieId={movieId || fetchedMovies?.results?.[0]?.id} />
       </div>
-      <main className=" bg-slate-800 p-3">
+      <main className=" bg-slate-800 p-6 mr-12 ml-12 ">
         <ApiMovies changeSrc={movieStatus} />
       </main>
     </>

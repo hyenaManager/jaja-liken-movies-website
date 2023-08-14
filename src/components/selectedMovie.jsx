@@ -9,18 +9,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { availableDates } from "./datas";
 import axios from "axios";
-export default function StatusMovie({ movieId, statusRef }) {
+import Skeleton, { ImgSkeleton, SkeletonText } from "../skeletons/skeletons";
+import Navbar from "./navbar";
+import { motion } from "framer-motion";
+import SkeletonBar from "../skeletons/skeletons";
+export default function Head({ movieId }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
   useEffect(() => {
-    if (movieId !== null) {
-      statusRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, [movieId]);
-  useEffect(() => {
-    findData(movieId);
+    setTimeout(() => findData(movieId), [4000]);
   }, [movieId]);
 
   const link = "https://image.tmdb.org/t/p/original/";
@@ -48,20 +44,31 @@ export default function StatusMovie({ movieId, statusRef }) {
   return (
     <>
       <div
-        className=" bg-cover bg-center bg-no-repeat pt-16 rounded-md "
+        className={
+          " bg-cover bg-center bg-no-repeat mt-10 " +
+          (!selectedMovie && " bg-slate-300")
+        }
         style={{
           backgroundImage: `url(${link + selectedMovie?.backdrop_path})`,
         }}
       >
         {/* movie covers */}
-        <div className=" ml-10 flex flex-col font-kanit" ref={statusRef}>
+        <div className=" ml-10 flex flex-col font-kanit pt-9">
           <div className=" flex justify-start ">
             {/* movie img */}
-            <img
-              src={link + selectedMovie?.poster_path}
-              className=" w-80 h-96 object-cover bg-slate-400 mr-10 rounded-lg drop-shadow-md"
-              alt="instetallar"
-            />
+
+            {!selectedMovie ? (
+              <ImgSkeleton />
+            ) : (
+              <motion.img
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                src={link + selectedMovie?.poster_path}
+                className=" w-80 h-96 object-cover mr-10 rounded-lg drop-shadow-md"
+                alt="instetallar"
+              />
+            )}
+
             {/* movie details */}
             <div
               className="flex flex-col h-96 text-slate-100 font-head"
@@ -69,65 +76,93 @@ export default function StatusMovie({ movieId, statusRef }) {
             >
               <span className="  mb-3 text-lg font-bold">
                 {selectedMovie?.release_date}
+                {!selectedMovie && <SkeletonBar percent={"100px"} />}
               </span>
               <h2 className=" text-4xl mb-3 font-bold drop-shadow-md capitalize">
                 {selectedMovie?.title}
+                {!selectedMovie && <SkeletonBar percent={"400px"} />}
               </h2>
               {/* about movie */}
               <div className="flex  mb-3 text-lg">
-                <span className=" mr-4 drop-shadow-md ">Genres</span>
-                <ul className=" list-disc flex  ">
+                <span className=" mr-4 drop-shadow-md ">
+                  {selectedMovie?.genres?.[1]?.name}
+                  {!selectedMovie && <SkeletonBar percent={"50px"} />}
+                </span>
+                <ul className=" flex  ">
                   <li className=" mr-3 ml-3 drop-shadow-md border-b-4 border-green-500">
                     {selectedMovie?.genres?.[2]?.name}
+                    {!selectedMovie && <SkeletonBar percent={"50px"} />}
                   </li>
                   <li className=" mr-3 ml-3 drop-shadow-md border-b-4 border-green-500">
                     {selectedMovie?.genres?.[0]?.name}
+                    {!selectedMovie && <SkeletonBar percent={"50px"} />}
                   </li>
                 </ul>
               </div>
               {/* short story */}
               <p className=" mb-3 text-xl drop-shadow-m6 text-slate-100 font-pureStyle">
                 {selectedMovie?.overview}
+                {!selectedMovie && <SkeletonBar percent={"800px"} />}
+                {!selectedMovie && <SkeletonBar percent={"800px"} />}
+                {!selectedMovie && <SkeletonBar percent={"600px"} />}
+                {!selectedMovie && <SkeletonBar percent={"400px"} />}
               </p>
               {/* movies rating and time */}
               <ul className=" list-none flex mb-3 text-lg">
                 <li className=" mr-3 flex justify-start items-center">
                   <FontAwesomeIcon icon={faClock} className=" text-teal-300" />
-                  <span>{selectedMovie?.runtime} min</span>
+                  <span>
+                    {selectedMovie && selectedMovie.runtime + " min"}
+                    {!selectedMovie && <SkeletonBar percent={"70px"} />}
+                  </span>
                 </li>
                 <li className=" mr-3 flex justify-start items-center">
                   <FontAwesomeIcon
                     icon={faClosedCaptioning}
                     className=" text-slate-200"
                   />
-                  <span>subtitle</span>
+                  <span>
+                    {selectedMovie && "subtitle"}
+                    {!selectedMovie && <SkeletonBar percent={"70px"} />}
+                  </span>
                 </li>
                 <li className=" mr-3 flex justify-start items-center">
                   <FontAwesomeIcon icon={faCircle} className=" text-red-700" />
-                  <span>liken rate {selectedMovie?.vote_average}/10</span>
+                  <span>
+                    {selectedMovie &&
+                      "liken rate " + selectedMovie?.vote_average + " /10"}
+                    {!selectedMovie && <SkeletonBar percent={"70px"} />}
+                  </span>
                 </li>
               </ul>
-              {/* option mode */}
-              <div className=" flex justify-start mb-3">
-                {/* trailer button*/}
-                <button className=" mr-5 p-3 pr-4 pl-4 hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg">
-                  <FontAwesomeIcon icon={faPlay} className="mr-2 text-white" />
-                  <span className=" text-white">watch trailer</span>
-                </button>
-                {/* read more */}
-                <div className=" flex justify-center items-center text-white cursor-pointer ">
-                  <FontAwesomeIcon
-                    icon={faEllipsis}
-                    className=" mr-1 text-4xl items-center"
-                  />
-                  <span className=" text-2xl flex items-center">read more</span>
+              {/* option mode show only after api is fteched */}
+              {selectedMovie && (
+                <div className=" flex justify-start mb-3">
+                  {/* trailer button*/}
+                  <button className=" mr-5 p-3 pr-4 pl-4 hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg">
+                    <FontAwesomeIcon
+                      icon={faPlay}
+                      className="mr-2 text-white"
+                    />
+                    <span className=" text-white">watch trailer</span>
+                  </button>
+                  {/* read more */}
+                  <div className=" flex justify-center items-center text-white cursor-pointer ">
+                    <FontAwesomeIcon
+                      icon={faEllipsis}
+                      className=" mr-1 text-4xl items-center"
+                    />
+                    <span className=" text-2xl flex items-center">
+                      read more
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
         {/* By ticket or Watch widget*/}
-        <div className=" flex justify-between items-center bg-slate-900 mt-1 font-head p-10">
+        <div className=" flex justify-between items-center bg-slate-950 mt-1 font-head p-10">
           {/* choose date */}
           <div className=" flex flex-col">
             <span className=" text-white">CHOOSE DATE: </span>

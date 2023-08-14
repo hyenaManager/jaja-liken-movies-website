@@ -5,6 +5,13 @@ import axios from "axios";
 
 export default function ApiMovies({ movie, changeSrc }) {
   const [fetchedData, setFetchedData] = useState(null);
+  const [filteredMovie, setFilteredMovie] = useState({
+    type: null,
+    year: null,
+    catagories: null,
+  });
+  //filtering movie by type
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -38,19 +45,60 @@ export default function ApiMovies({ movie, changeSrc }) {
     </>
   );
 }
-function SelectionHead() {
+function SelectionHead({ filteredType }) {
+  const movieGenres = [
+    "All",
+    "Action",
+    "Adventure",
+    "Animation",
+    "Comedy",
+    "Crime",
+    "Drama",
+    "Fantasy",
+    "Horror",
+    "Mystery",
+    "Romance",
+    "Sci-Fi",
+    "Thriller",
+    "Western",
+    "Documentary",
+    "Musical",
+    "War",
+    "Historical",
+    "Superhero",
+    "Family",
+    "Biography",
+    "Science Fiction",
+  ];
+  const yearList = Array.from(
+    { length: 2023 - 1990 + 1 },
+    (_, index) => 2023 - index
+  );
+  const Type = ["Now Playing", "Popular", "Top Rated", "Upcoming"];
   return (
     <>
       <div className="flex justify-between p-3 font-kanit">
         <ul className="flex justify-between list-none text-white">
           <li className=" pl-9 cursor-pointer">
-            <SelectionHeadDropdown name={"By year"} />
+            <SelectionHeadDropdown
+              name={"By year"}
+              list={yearList}
+              filteredType={filteredType}
+            />
           </li>
           <li className=" pl-9 cursor-pointer">
-            <SelectionHeadDropdown name={"By catagory"} />
+            <SelectionHeadDropdown
+              name={"By catagory"}
+              list={movieGenres}
+              filteredType={filteredType}
+            />
           </li>
           <li className=" pl-9 cursor-pointer">
-            <SelectionHeadDropdown name={"Released"} />
+            <SelectionHeadDropdown
+              name={"Type"}
+              list={Type}
+              filteredType={filteredType}
+            />
           </li>
         </ul>
         <div className="flex justify-center">
@@ -62,7 +110,7 @@ function SelectionHead() {
   );
 }
 
-function SelectionHeadDropdown({ name }) {
+function SelectionHeadDropdown({ name, list, filteredType }) {
   const [hidden, setHidden] = useState(true);
   return (
     <div className="relative inline-block text-left z-20">
@@ -82,7 +130,7 @@ function SelectionHeadDropdown({ name }) {
 
       <div
         className={
-          " origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 " +
+          " origin-top-right absolute right-0 mt-2 h-32 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 " +
           (hidden ? " hidden" : null)
         }
         role="menu"
@@ -90,24 +138,14 @@ function SelectionHeadDropdown({ name }) {
         aria-labelledby="options-menu"
       >
         <div className="py-1" role="none">
-          <a
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            2020
-          </a>
-          <a
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            2020
-          </a>
-          <a
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            2020
-          </a>
+          {list.map((data) => (
+            <a
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              role="menuitem"
+            >
+              {data}
+            </a>
+          ))}
         </div>
       </div>
     </div>
@@ -126,7 +164,7 @@ function Movie({ movie, changeSrc }) {
       <img
         src={"https://image.tmdb.org/t/p/original" + movie.poster_path}
         alt={movie.original_title}
-        className="rounded-md w-78 h-103 object-cover "
+        className="rounded-md "
       />
       <span className="text-lg text-white text-start capitalize">
         {movie.original_title}

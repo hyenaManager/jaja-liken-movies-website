@@ -14,7 +14,7 @@ export default {
       'headCover':"url('/blackholeL.png')"
     },
     height: {
-      '103': '453px',
+      '103': '400px',
     },
     width:{
       '78':"310px"
