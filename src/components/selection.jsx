@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
+import { SkeletonColumn } from "../skeletons/skeletons";
+import { motion } from "framer-motion";
+
 export default function ApiMovies({ movie, changeSrc }) {
   const [fetchedData, setFetchedData] = useState(null);
   const [filteredMovie, setFilteredMovie] = useState({
@@ -15,7 +18,9 @@ export default function ApiMovies({ movie, changeSrc }) {
   //filtering movie by type
 
   useEffect(() => {
-    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, [3000]);
   }, []);
   const fetchData = async () => {
     const url =
@@ -40,10 +45,18 @@ export default function ApiMovies({ movie, changeSrc }) {
   const moviesList = fetchedData?.results?.map((movie) => (
     <Movie movie={movie} key={movie.id} changeSrc={changeSrc} imgRef={imgRef} />
   ));
+  const skeletonImgs = [1, 2, 3, 4].map((num) => (
+    <div key={num}>
+      <SkeletonColumn percent={"390px"} />
+    </div>
+  ));
   return (
     <>
       <SelectionHead />
-      <div className=" grid grid-cols-4 gap-8 font-head p-3">{moviesList}</div>
+      <div className=" grid grid-cols-4 gap-8 font-head p-3">
+        {moviesList}
+        {!fetchedData && skeletonImgs}
+      </div>
     </>
   );
 }
@@ -159,7 +172,9 @@ function Movie({ movie, changeSrc, imgRef }) {
   const [isHover, setIsHover] = useState(false);
   console.log(imgRef.current);
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className=" flex flex-col relative"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
@@ -185,6 +200,6 @@ function Movie({ movie, changeSrc, imgRef }) {
           <span className=" text-white">check</span>
         </button>
       )}
-    </div>
+    </motion.div>
   );
 }

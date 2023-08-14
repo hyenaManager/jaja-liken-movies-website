@@ -19,6 +19,16 @@ export default function SkeletonBar({ percent }) {
     </div>
   );
 }
+export function SkeletonColumn({ percent }) {
+  return (
+    <div
+      className="relative rounded-lg bg-slate-400 overflow-hidden h-7 m-1"
+      style={{ height: percent }}
+    >
+      <Flashing />
+    </div>
+  );
+}
 export function SkeletonText() {
   return (
     <div className="relative overflow-hidden ">
