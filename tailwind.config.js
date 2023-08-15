@@ -14,6 +14,10 @@ export default {
       'general':'480px',
       'ipad':'600px',
     },
+    minWidth:{
+      '100':'250px',
+      '150':'350px',
+    },
     backgroundImage:{
       'headCover':"url('/blackholeL.png')"
     },

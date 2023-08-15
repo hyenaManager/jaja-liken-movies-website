@@ -14,6 +14,7 @@ import Navbar from "./navbar";
 import { motion } from "framer-motion";
 import SkeletonBar from "../skeletons/skeletons";
 import "/src/styles/queries.css";
+import SuggestMovies from "./suggestions";
 export default function Head({ movieId }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [readMore, setReadMore] = useState(false);
@@ -61,7 +62,7 @@ export default function Head({ movieId }) {
     <>
       <div
         className={
-          "headParentDiv  mt-10 " + (!selectedMovie && " bg-slate-300")
+          "headParentDiv  mt-10 pt-4 pb-5" + (!selectedMovie && " bg-slate-300")
         }
         style={{
           backgroundImage: `url(${link + selectedMovie?.backdrop_path})`,
@@ -196,11 +197,13 @@ export default function Head({ movieId }) {
           </div>
         </div>
 
-        {/* By ticket or Watch widget*/}
+        {/* You may also like*/}
       </div>
+      <SuggestMovies />
     </>
   );
 }
+
 function TicketBuy() {
   return (
     <>
