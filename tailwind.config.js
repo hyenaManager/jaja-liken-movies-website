@@ -10,6 +10,10 @@ export default {
       'borderText':'Jacques Francois Shadow',
       'pureStyle':'Metal Mania'
     },
+    maxWidth:{
+      'general':'480px',
+      'ipad':'600px',
+    },
     backgroundImage:{
       'headCover':"url('/blackholeL.png')"
     },
