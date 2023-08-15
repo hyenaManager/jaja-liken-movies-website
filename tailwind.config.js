@@ -18,6 +18,11 @@ export default {
     },
     width:{
       '78':"310px"
+    },
+    screens:{
+      'ph-size':'300px',
+      'ipad':'600px',
+      'generalSize':'480px'
     }
   },
   },

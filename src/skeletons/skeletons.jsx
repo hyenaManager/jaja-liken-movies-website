@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export function ImgSkeleton() {
   return (
     <>
-      <div className=" relative w-64 mr-10 h-96 rounded-lg bg-slate-400 overflow-hidden">
+      <div className=" relative w-64 mr-4 h-96 rounded-lg bg-slate-400 overflow-hidden">
         <Flashing />
       </div>
     </>
@@ -12,7 +12,7 @@ export function ImgSkeleton() {
 export default function SkeletonBar({ percent }) {
   return (
     <div
-      className="relative rounded-lg bg-slate-400 overflow-hidden h-7 m-1"
+      className="relative rounded-lg bg-slate-400 overflow-hidden h-7 mt-1"
       style={{ width: percent }}
     >
       <Flashing />

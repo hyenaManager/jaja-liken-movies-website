@@ -1,4 +1,9 @@
-import { faPlay, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faChevronUp,
+  faPlay,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -13,6 +18,7 @@ export default function ApiMovies({ movie, changeSrc }) {
     year: null,
     catagories: null,
   });
+  const Type = ["Now Playing", "Popular", "Top Rated", "Upcoming"];
   //for console
   const imgRef = useRef();
   //filtering movie by type
@@ -52,74 +58,23 @@ export default function ApiMovies({ movie, changeSrc }) {
   ));
   return (
     <>
-      <SelectionHead />
-      <div className=" grid grid-cols-4 gap-8 font-head p-3">
+      <div className=" selectionNav flex justify-between p-2">
+        <SelectionHeadDropdown name={"Catagories"} list={Type} />
+        <div className="flex justify-start items-center">
+          <input
+            type="text"
+            className=" rounded-sm p-1 focus:outline-none focus:shadow-outline "
+            placeholder="search movies.."
+          />
+          <FontAwesomeIcon
+            icon={faSearch}
+            className=" cursor-auto text-slate-300"
+          />
+        </div>
+      </div>
+      <div className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4  font-head ph-size:p-1 sm:p-3">
         {moviesList}
         {!fetchedData && skeletonImgs}
-      </div>
-    </>
-  );
-}
-function SelectionHead({ filteredType }) {
-  const movieGenres = [
-    "All",
-    "Action",
-    "Adventure",
-    "Animation",
-    "Comedy",
-    "Crime",
-    "Drama",
-    "Fantasy",
-    "Horror",
-    "Mystery",
-    "Romance",
-    "Sci-Fi",
-    "Thriller",
-    "Western",
-    "Documentary",
-    "Musical",
-    "War",
-    "Historical",
-    "Superhero",
-    "Family",
-    "Biography",
-    "Science Fiction",
-  ];
-  const yearList = Array.from(
-    { length: 2023 - 1990 + 1 },
-    (_, index) => 2023 - index
-  );
-  const Type = ["Now Playing", "Popular", "Top Rated", "Upcoming"];
-  return (
-    <>
-      <div className="flex justify-between p-3 font-kanit">
-        <ul className="flex justify-between list-none text-white">
-          <li className=" pl-9 cursor-pointer">
-            <SelectionHeadDropdown
-              name={"By year"}
-              list={yearList}
-              filteredType={filteredType}
-            />
-          </li>
-          <li className=" pl-9 cursor-pointer">
-            <SelectionHeadDropdown
-              name={"By catagory"}
-              list={movieGenres}
-              filteredType={filteredType}
-            />
-          </li>
-          <li className=" pl-9 cursor-pointer">
-            <SelectionHeadDropdown
-              name={"Type"}
-              list={Type}
-              filteredType={filteredType}
-            />
-          </li>
-        </ul>
-        <div className="flex justify-center">
-          <input type="text" className="text" />
-          <FontAwesomeIcon icon={faSearch} />
-        </div>
       </div>
     </>
   );
@@ -135,12 +90,17 @@ function SelectionHeadDropdown({ name, list, filteredType }) {
           e.stopPropagation();
         }}
         type="button"
-        className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="inline-flex justify-center items-center w-full rounded-md text-lg font-head text-white"
         id="options-menu"
         aria-expanded="true"
         aria-haspopup="true"
       >
         {name}
+        {hidden ? (
+          <FontAwesomeIcon icon={faChevronDown} className=" ml-1" />
+        ) : (
+          <FontAwesomeIcon icon={faChevronUp} className=" ml-1" />
+        )}
       </button>
 
       <div
@@ -152,11 +112,11 @@ function SelectionHeadDropdown({ name, list, filteredType }) {
         aria-orientation="vertical"
         aria-labelledby="options-menu"
       >
-        <div className="py-1" role="none">
+        <div className="py-1 overflow-x-hidden " role="none">
           {list.map((data) => (
             <a
               key={data}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className=" cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200 hover:text-gray-900"
               role="menuitem"
             >
               {data}
@@ -170,7 +130,6 @@ function SelectionHeadDropdown({ name, list, filteredType }) {
 
 function Movie({ movie, changeSrc, imgRef }) {
   const [isHover, setIsHover] = useState(false);
-  console.log(imgRef.current);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -180,13 +139,15 @@ function Movie({ movie, changeSrc, imgRef }) {
       onMouseLeave={() => setIsHover(false)}
     >
       {/* blah blah */}
-      <img
+      <motion.img
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         ref={imgRef}
         src={"https://image.tmdb.org/t/p/original" + movie.poster_path}
         alt={movie.original_title}
         className="rounded-md "
       />
-      <span className="text-lg text-white text-start capitalize">
+      <span className="ph-size:text-sm sm:text-lg text-white text-start capitalize">
         {movie.original_title}
       </span>
       {/* check movie button */}

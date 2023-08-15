@@ -1,0 +1,21 @@
+@media screen and (max-width: 480px) {
+  .headParentDiv {
+    max-width: 480px;
+  }
+  .movieCover {
+    max-width: 480px;
+  }
+  .navbar {
+    max-width: 480px;
+  }
+  .showedMovies {
+    max-width: 480px;
+  }
+
+  .selectionDropdown {
+    max-width: 480px;
+  }
+  .smallNav {
+    max-width: 480px;
+  }
+}
