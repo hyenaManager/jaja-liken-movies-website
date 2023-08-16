@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-import { SkeletonColumn } from "../skeletons/skeletons";
+import { SkeletonColumn } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
 
 export default function ApiMovies({ movie, changeSrc }) {

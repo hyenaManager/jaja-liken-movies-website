@@ -29,7 +29,7 @@ export default function Navbar({ toggleNav }) {
               (selectedNav === "schedules" && " border-b-4 border-b-red-600")
             }
           >
-            schedules
+            favourite
           </li>
           <li
             onClick={() => setSelectedNav("tickets")}
@@ -38,7 +38,7 @@ export default function Navbar({ toggleNav }) {
               (selectedNav === "tickets" && " border-b-4 border-b-red-600")
             }
           >
-            tickets
+            news
           </li>
           <li
             onClick={() => setSelectedNav("news")}
@@ -47,7 +47,7 @@ export default function Navbar({ toggleNav }) {
               (selectedNav === "news" && " border-b-4 border-b-red-600")
             }
           >
-            news
+            search
           </li>
           <li
             onClick={() => setSelectedNav("contact")}
@@ -78,11 +78,14 @@ export default function Navbar({ toggleNav }) {
 export function SmallNavbar({ toggleNav }) {
   return (
     <>
-      <nav className="smallNav w-full  z-40 backdrop-blur-sm bg-white/50 fixed top-0 left-0 font-kanit text-white uppercase h-full cursor-pointer">
+      <nav
+        onClick={toggleNav}
+        className="smallNav w-full  z-40 backdrop-blur-sm bg-white/50 fixed top-0 left-0 font-kanit text-white uppercase h-full cursor-pointer"
+      >
         <motion.ul
           initial={{ x: "-100vw" }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.6 }}
           exit={{ opacity: 0, x: "-100vw" }}
           className="top-0  left-0 w-1/3 flex flex-col items-center h-full z-50 bg-slate-800 cursor-pointer"
         >

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import SkeletonBar from "../skeletons/skeletons";
+import SkeletonBar from "/src/skeletons/skeletons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
