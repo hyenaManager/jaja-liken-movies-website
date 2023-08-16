@@ -9,10 +9,10 @@ export function ImgSkeleton() {
     </>
   );
 }
-export default function SkeletonBar({ percent }) {
+export default function SkeletonBar({ percent, color = "bg-slate-400" }) {
   return (
     <div
-      className="relative rounded-lg bg-slate-400 overflow-hidden h-7 mt-1"
+      className={`relative rounded-lg ${color} overflow-hidden h-7 mt-1`}
       style={{ width: percent }}
     >
       <Flashing />
@@ -25,29 +25,6 @@ export function SkeletonColumn({ percent }) {
       className="relative rounded-lg bg-slate-400 overflow-hidden h-7 m-1"
       style={{ height: percent }}
     >
-      <Flashing />
-    </div>
-  );
-}
-export function SkeletonText() {
-  return (
-    <div className="relative overflow-hidden ">
-      <div
-        className=" rounded-lg bg-emerald-500 m-1 h-7"
-        style={{ width: "800px" }}
-      ></div>
-      <div
-        className=" rounded-lg bg-emerald-500 m-1 h-7"
-        style={{ width: "800px" }}
-      ></div>
-      <div
-        className=" rounded-lg bg-emerald-500 m-1 h-7"
-        style={{ width: "600px" }}
-      ></div>
-      <div
-        className=" rounded-lg bg-emerald-500 m-1 h-7"
-        style={{ width: "200px" }}
-      ></div>
       <Flashing />
     </div>
   );

@@ -18,6 +18,14 @@ export default {
       '100':'250px',
       '150':'350px',
     },
+    minHeight:{
+      'normal':'400px'
+    },
+    maxHeight:{
+      'normal':'400px',
+      'small':'250px',
+    }
+    ,
     backgroundImage:{
       'headCover':"url('/blackholeL.png')"
     },

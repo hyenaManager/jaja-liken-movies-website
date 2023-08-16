@@ -13,24 +13,22 @@ import { motion } from "framer-motion";
 
 export default function ApiMovies({ movie, changeSrc }) {
   const [fetchedData, setFetchedData] = useState(null);
-  const [filteredMovie, setFilteredMovie] = useState({
-    type: null,
-    year: null,
-    catagories: null,
-  });
-  const Type = ["Now Playing", "Popular", "Top Rated", "Upcoming"];
+  const [requestedCatagory, setRequestedCatagory] = useState("popular");
+
   //for console
   const imgRef = useRef();
   //filtering movie by type
-
+  function handleCatagory(type) {
+    setFetchedData(null);
+    setRequestedCatagory(type);
+  }
   useEffect(() => {
     setTimeout(() => {
       fetchData();
     }, [3000]);
-  }, []);
+  }, [requestedCatagory]);
   const fetchData = async () => {
-    const url =
-      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+    const url = `https://api.themoviedb.org/3/movie/${requestedCatagory}?language=en-US&page=1`;
     const options = {
       method: "GET",
       headers: {
@@ -59,7 +57,10 @@ export default function ApiMovies({ movie, changeSrc }) {
   return (
     <>
       <div className=" selectionNav flex justify-between p-2">
-        <SelectionHeadDropdown name={"Catagories"} list={Type} />
+        <SelectionHeadDropdown
+          name={"Catagories"}
+          handleCatagory={handleCatagory}
+        />
         <div className="flex justify-start items-center">
           <input
             type="text"
@@ -80,8 +81,10 @@ export default function ApiMovies({ movie, changeSrc }) {
   );
 }
 
-function SelectionHeadDropdown({ name, list, filteredType }) {
+function SelectionHeadDropdown({ name, handleCatagory }) {
   const [hidden, setHidden] = useState(true);
+  const Type = ["Now Playing", "Popular", "Top Rated", "Upcoming"];
+  const ApiName = ["now_playing", "popular", "top_rated", "upcoming"];
   return (
     <div className="relative inline-block text-left z-20" key={name}>
       <button
@@ -113,14 +116,18 @@ function SelectionHeadDropdown({ name, list, filteredType }) {
         aria-labelledby="options-menu"
       >
         <div className="py-1 overflow-x-hidden " role="none">
-          {list.map((data) => (
-            <a
+          {Type.map((data, index) => (
+            <button
+              onClick={() => {
+                handleCatagory(ApiName[index]);
+                setHidden(!hidden);
+              }}
               key={data}
               className=" cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200 hover:text-gray-900"
               role="menuitem"
             >
               {data}
-            </a>
+            </button>
           ))}
         </div>
       </div>
@@ -152,14 +159,16 @@ function Movie({ movie, changeSrc, imgRef }) {
       </span>
       {/* check movie button */}
       {isHover && (
-        <button
+        <motion.button
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 1.3 }}
           onClick={() => changeSrc(movie)}
           className={
-            "p-1 pr-2 pl-2 bg-red-700 text-white rounded-3xl text-md absolute top-3 right-3 "
+            "p-1 pr-2 pl-2 bg-green-400 text-white rounded-3xl text-md absolute top-3 right-3 drop-shadow-xl"
           }
         >
           <span className=" text-white">check</span>
-        </button>
+        </motion.button>
       )}
     </motion.div>
   );

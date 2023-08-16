@@ -9,13 +9,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import { availableDates } from "./datas";
 import axios from "axios";
-import Skeleton, { ImgSkeleton, SkeletonText } from "../skeletons/skeletons";
+import Skeleton, { ImgSkeleton } from "../skeletons/skeletons";
 import Navbar from "./navbar";
 import { motion } from "framer-motion";
 import SkeletonBar from "../skeletons/skeletons";
 import "/src/styles/queries.css";
 import SuggestMovies from "./suggestions";
-export default function Head({ movieId }) {
+export default function Head({ movieId, changeMovieId }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [readMore, setReadMore] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
@@ -199,7 +199,10 @@ export default function Head({ movieId }) {
 
         {/* You may also like*/}
       </div>
-      <SuggestMovies />
+      <SuggestMovies
+        suggestGenre={selectedMovie?.genres?.[0]?.id}
+        changeMovieId={changeMovieId}
+      />
     </>
   );
 }
