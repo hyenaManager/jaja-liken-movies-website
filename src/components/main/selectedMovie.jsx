@@ -182,7 +182,10 @@ export default function Head({ movieId, changeMovieId }) {
                 </span>
               </li>
               <li className=" flex justify-start items-center">
-                <FontAwesomeIcon icon={faCircle} className=" text-red-700" />
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className=" text-yellow-500 text-xl flex items-center justify-center"
+                />
                 <span>
                   {selectedMovie &&
                     "imdb " + selectedMovie?.vote_average + " /10"}
@@ -202,10 +205,6 @@ export default function Head({ movieId, changeMovieId }) {
                   <span className=" text-white">watch trailer</span>
                 </button>
                 {/* favaorite button */}
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className=" text-yellow-500 text-4xl flex items-center justify-center"
-                />
               </div>
             )}
           </div>
