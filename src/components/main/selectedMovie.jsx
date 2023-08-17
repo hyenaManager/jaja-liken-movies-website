@@ -4,6 +4,8 @@ import {
   faClosedCaptioning,
   faEllipsis,
   faPlay,
+  faStar,
+  faStarHalfStroke,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
@@ -14,17 +16,19 @@ import { motion } from "framer-motion";
 import SkeletonBar from "/src/skeletons/skeletons";
 import "/src/styles/queries.css";
 import SuggestMovies from "./suggestions";
+import TrailerVideo from "./trailerVideo";
 export default function Head({ movieId, changeMovieId }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [readMore, setReadMore] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
+  const [watchTrailer, setWatchTrailer] = useState(false);
 
   const elementRef = useRef(null);
 
   const height = elementRef?.current?.clientHeight;
 
   useEffect(() => {
-    setTimeout(() => findData(movieId), [4000]);
+    setTimeout(() => findData(movieId), [2000]);
   }, [movieId]);
 
   useEffect(() => {
@@ -61,7 +65,8 @@ export default function Head({ movieId, changeMovieId }) {
     <>
       <div
         className={
-          "headParentDiv  mt-10 pt-4 pb-5" + (!selectedMovie && " bg-slate-300")
+          "headParentDiv relative  mt-10 pt-4 pb-5" +
+          (!selectedMovie && " bg-slate-300")
         }
         style={{
           backgroundImage: `url(${link + selectedMovie?.backdrop_path})`,
@@ -139,12 +144,14 @@ export default function Head({ movieId, changeMovieId }) {
                 <button
                   className=" flex justify-start items-center text-white "
                   onClick={() => setReadMore(!readMore)}
+                  style={{ textShadow: "2px 2px 8px black" }}
                 >
                   <FontAwesomeIcon
                     icon={faEllipsis}
-                    className=" mr-1 text-2xl items-center drop-shadow-lg"
+                    className=" mr-1 text-2xl items-center "
+                    style={{ textShadow: "2px 2px 8px black" }}
                   />
-                  <span className=" text-xl flex items-center drop-shadow-lg">
+                  <span className=" text-xl flex items-center ">
                     {readMore ? "show less" : "read more"}
                   </span>
                 </button>
@@ -185,131 +192,37 @@ export default function Head({ movieId, changeMovieId }) {
             </ul>
             {/* option mode show only after api is fteched */}
             {selectedMovie && (
-              <div className=" flex justify-start items-end">
+              <div className=" flex justify-start items-center">
                 {/* trailer button*/}
-                <button className=" mr-5 p-3 pr-4 pl-4 hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg">
+                <button
+                  onClick={() => setWatchTrailer(!watchTrailer)}
+                  className=" mr-5 p-3 pr-4 pl-4 hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg"
+                >
                   <FontAwesomeIcon icon={faPlay} className="mr-2 text-white" />
                   <span className=" text-white">watch trailer</span>
                 </button>
+                {/* favaorite button */}
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className=" text-yellow-500 text-4xl flex items-center justify-center"
+                />
               </div>
             )}
           </div>
         </div>
 
         {/* You may also like*/}
+        {watchTrailer && (
+          <TrailerVideo
+            toggleVideo={() => setWatchTrailer(!watchTrailer)}
+            movieSource={selectedMovie}
+          />
+        )}
       </div>
       <SuggestMovies
         suggestGenre={selectedMovie?.genres?.[0]?.id}
         changeMovieId={changeMovieId}
       />
-    </>
-  );
-}
-
-function TicketBuy() {
-  return (
-    <>
-      <div className=" flex justify-between items-center bg-slate-950 mt-1 font-head p-10">
-        {/* choose date */}
-        <div className=" flex flex-col">
-          <span className=" text-white">CHOOSE DATE: </span>
-          {/* selections of dates */}
-          <DateTime option={"date"} />
-        </div>
-        {/* choose times */}
-        <div className=" flex flex-col">
-          <span className=" text-white">CHOOSE DATE: </span>
-          {/* selections of times */}
-          <DateTime option={"time"} />
-        </div>
-        {/* buy ticket button */}
-        <button className=" mr-5 p-2 w-32 h-12 pr-4 pl-4 flex items-center hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg">
-          <span className=" text-white">Buy Ticket</span>
-        </button>
-      </div>
-    </>
-  );
-}
-
-function DateTime({ option }) {
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(4);
-  const [selectedDate, setSelectedDate] = useState("none");
-
-  function reduce() {
-    if (min !== 0) {
-      setMin(min - 1);
-      setMax(max - 1);
-    }
-  }
-  function increase() {
-    if (max !== availableDates.length - 1) {
-      setMin(min + 1);
-      setMax(max + 1);
-    }
-  }
-
-  const pagList =
-    option === "date"
-      ? availableDates.map((avaDate, index) => {
-          if (min <= index && index <= max) {
-            return (
-              <button
-                onClick={() => setSelectedDate(avaDate.id)}
-                className={
-                  " flex flex-col justify-center items-center text-slate-200 p-1 " +
-                  (selectedDate === avaDate.id && "border-b-2 border-b-red-600")
-                }
-                key={avaDate.id}
-              >
-                <span className=" text-slate-400 text-sm">
-                  {avaDate.month.toUpperCase() + " " + avaDate.date}
-                </span>
-                <span className=" uppercase">{avaDate.day}</span>
-              </button>
-            );
-          } else {
-            return;
-          }
-        })
-      : availableDates.map((avaDate, index) => {
-          if (min <= index && index <= max) {
-            return (
-              <button
-                onClick={() => setSelectedDate(avaDate.id)}
-                className={
-                  " flex flex-col justify-center items-center text-slate-200 p-1 " +
-                  (selectedDate === avaDate.id && "border-b-2 border-b-red-600")
-                }
-                key={avaDate.id}
-              >
-                <span className=" text-slate-400 text-sm">
-                  {avaDate.month.toUpperCase() + " " + avaDate.date}
-                </span>
-                <span className=" uppercase">{avaDate.day}</span>
-              </button>
-            );
-          } else {
-            return;
-          }
-        });
-  return (
-    <>
-      <div className=" flex ">
-        <button
-          className=" font-bold text-red-700 text-lg mr-2"
-          onClick={() => reduce()}
-        >
-          {"<"}
-        </button>
-        {pagList}
-        <button
-          className=" font-bold text-red-700 text-lg ml-2"
-          onClick={() => increase()}
-        >
-          {">"}
-        </button>
-      </div>
     </>
   );
 }

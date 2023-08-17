@@ -24,6 +24,7 @@ export default {
     maxHeight:{
       'normal':'400px',
       'small':'250px',
+      'almost':"95%"
     }
     ,
     backgroundImage:{
@@ -31,6 +32,7 @@ export default {
     },
     height: {
       '103': '400px',
+      'almost':'93%'
     },
     width:{
       '78':"310px"

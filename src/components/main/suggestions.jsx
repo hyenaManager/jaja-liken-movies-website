@@ -15,7 +15,7 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
       if (suggestGenre) {
         fetchTrendingMovies();
       }
-    }, [3000]);
+    }, [2000]);
   }, [suggestGenre]);
   useEffect(
     () =>

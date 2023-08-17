@@ -4,6 +4,7 @@ import "./index.css";
 import { AnimatePresence } from "framer-motion";
 import Navbar, { SmallNavbar } from "./components/main/navbar";
 import { useState } from "react";
+import TrailerVideo from "./components/main/trailerVideo";
 
 function App() {
   const [smallNav, setSmallNav] = useState(false);
@@ -19,6 +20,7 @@ function App() {
       <AnimatePresence>
         {smallNav && <SmallNavbar toggleNav={toggleNav} />}
       </AnimatePresence>
+
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>

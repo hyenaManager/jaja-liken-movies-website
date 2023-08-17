@@ -14,18 +14,20 @@ import { motion } from "framer-motion";
 export default function ApiMovies({ movie, changeSrc }) {
   const [fetchedData, setFetchedData] = useState(null);
   const [requestedCatagory, setRequestedCatagory] = useState("popular");
+  const catagoryRef = useRef("Popular");
 
   //for console
   const imgRef = useRef();
   //filtering movie by type
-  function handleCatagory(type) {
+  function handleCatagory(type, catagory) {
     setFetchedData(null);
     setRequestedCatagory(type);
+    catagoryRef.current = catagory;
   }
   useEffect(() => {
     setTimeout(() => {
       fetchData();
-    }, [3000]);
+    }, [2000]);
   }, [requestedCatagory]);
   const fetchData = async () => {
     const url = `https://api.themoviedb.org/3/movie/${requestedCatagory}?language=en-US&page=1`;
@@ -58,7 +60,7 @@ export default function ApiMovies({ movie, changeSrc }) {
     <>
       <div className=" selectionNav flex justify-between p-2">
         <SelectionHeadDropdown
-          name={"Catagories"}
+          name={catagoryRef.current}
           handleCatagory={handleCatagory}
         />
         <div className="flex justify-start items-center">
@@ -119,7 +121,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
           {Type.map((data, index) => (
             <button
               onClick={() => {
-                handleCatagory(ApiName[index]);
+                handleCatagory(ApiName[index], data);
                 setHidden(!hidden);
               }}
               key={data}
