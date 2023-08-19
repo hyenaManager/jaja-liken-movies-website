@@ -13,6 +13,9 @@ function TrailerVideo({ toggleVideo, movieSource }) {
   const videoKey = fetchVideo?.results?.find(
     (movie) => movie.type.toLowerCase() === "trailer"
   );
+  const videoKeyBackup = fetchVideo?.results?.find(
+    (movie) => movie.type.toLowerCase() === "teaser"
+  );
 
   const togglePlayPause = () => {
     if (videoRef.current.paused) {
@@ -64,7 +67,9 @@ function TrailerVideo({ toggleVideo, movieSource }) {
       >
         <iframe
           className=" w-full h-full"
-          src={`https://www.youtube.com/embed/${videoKey?.key}`}
+          src={`https://www.youtube.com/embed/${
+            videoKey?.key || videoKeyBackup?.key
+          }`}
           title="YouTube video player"
           allowFullScreen
         ></iframe>
