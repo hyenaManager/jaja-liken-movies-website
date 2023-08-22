@@ -1,35 +1,44 @@
-import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faPause,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
 function TrailerVideo({ toggleVideo, movieSource }) {
-  const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [fetchVideo, setFetchVideo] = useState(null);
+  const [trailerVideoIndex, SetTrailerVideoIndex] = useState(0);
+  const [fetchedVideo, setFetchedVideo] = useState(null);
   //   const youtubeLink = "https://www.youtube.com/watch?v=";
-  const videoKey = fetchVideo?.results?.find(
-    (movie) => movie.type.toLowerCase() === "trailer"
-  );
-  const videoKeyBackup = fetchVideo?.results?.find(
-    (movie) => movie.type.toLowerCase() === "teaser"
-  );
+  var status = 1 + trailerVideoIndex;
 
-  const togglePlayPause = () => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
-    setIsPlaying(!isPlaying);
-  };
+  const trailerVideos = fetchedVideo?.results?.filter(
+    (movie) => movie.type.toLowerCase() === "trailer"
+  ); //fetching all the trailer video
+
   useEffect(() => {
-    fetchMovie();
+    fetchVideo();
   }, [movieSource]);
 
-  function fetchMovie() {
+  //for implementation of watching more trailer videos by arrow buttons
+  function decreaseVideoIndex() {
+    if (trailerVideoIndex === 0) {
+      return;
+    }
+
+    SetTrailerVideoIndex((index) => index - 1);
+  }
+  function increaseVideoIndex() {
+    if (trailerVideoIndex === trailerVideos.length - 1) {
+      return;
+    }
+
+    SetTrailerVideoIndex((index) => index + 1);
+  }
+  //fetching video key for youtube source
+  function fetchVideo() {
     const url = `https://api.themoviedb.org/3/movie/${movieSource.id}/videos?language=en-US`;
     const options = {
       method: "GET",
@@ -42,7 +51,7 @@ function TrailerVideo({ toggleVideo, movieSource }) {
 
     axios(url, options)
       .then((response) => {
-        setFetchVideo(response.data);
+        setFetchedVideo(response.data);
       })
       .catch((error) => {
         console.error("error:", error);
@@ -58,21 +67,37 @@ function TrailerVideo({ toggleVideo, movieSource }) {
       className="  absolute w-full z-20 backdrop-blur-sm top-0 left-0 font-kanit text-white uppercase h-full cursor-auto videoHolder flex justify-center items-center"
     >
       {/* video container */}
-      <div
-        onClick={(e) => {
-          togglePlayPause();
-          e.stopPropagation();
-        }}
-        className="video-container ph-size:w-fit ph-size:h-1/2 sm:w-3/4 sm:h-almost z-30  relative "
-      >
+      <div className="video-container flex flex-col ph-size:w-fit ph-size:h-1/2 sm:w-3/4 sm:h-almost z-30  relative ">
         <iframe
           className=" w-full h-full"
-          src={`https://www.youtube.com/embed/${
-            videoKey?.key || videoKeyBackup?.key
-          }`}
+          src={`https://www.youtube.com/embed/${trailerVideos?.[trailerVideoIndex]?.key}`}
           title="YouTube video player"
           allowFullScreen
         ></iframe>
+        <span className=" flex justify-center items-center bg-black p-1">
+          {trailerVideos?.[trailerVideoIndex]?.name}
+        </span>
+        <div className=" flex justify-between">
+          <FontAwesomeIcon
+            icon={faArrowLeft}
+            className=" text-xl p-2 bg-red-500 "
+            onClick={(e) => {
+              decreaseVideoIndex();
+              e.stopPropagation();
+            }}
+          />
+          <span className=" flex justify-center items-center bg-black w-full">
+            {status}
+          </span>
+          <FontAwesomeIcon
+            icon={faArrowRight}
+            className=" text-xl p-2 bg-red-500 "
+            onClick={(e) => {
+              increaseVideoIndex();
+              e.stopPropagation();
+            }}
+          />
+        </div>
       </div>
     </div>
   );

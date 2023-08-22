@@ -102,7 +102,7 @@ export default function Head({ movieId, changeMovieId }) {
               {selectedMovie?.release_date}
               {!selectedMovie && <SkeletonBar percent={"20%"} />}
             </span>
-            <h2 className=" text-4xl mb-3 font-bold drop-shadow-md capitalize">
+            <h2 className=" ph-size:text-sm sm:text-4xl mb-3 font-bold drop-shadow-md capitalize">
               {selectedMovie?.title}
               {!selectedMovie && <SkeletonBar percent={"50%"} />}
             </h2>
