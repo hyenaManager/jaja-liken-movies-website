@@ -23,27 +23,11 @@ export default function ApiMovies({ movie, changeSrc }) {
     setRequestedCatagory(type);
     catagoryRef.current = catagory;
   }
-<<<<<<< HEAD
-  useEffect(() => {
-    fetchData();
-  }, [requestedCatagory]);
-  const fetchData = async () => {
-    const url = `https://api.themoviedb.org/3/movie/${requestedCatagory}?language=en-US&page=1`;
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZWY1ZTkwNGVkNWNkNTZiYzg3NTRmZjIyZDA4MmQ5NCIsInN1YiI6IjY0ZDcxZDY3YjZjMjY0MTE1NzUzNjIyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nOaUcA7pG53bkWSCcnxRYJRFTbY95LGjLKl0cux84S4",
-      },
-    };
-=======
   const { status, data } = useQuery({
     queryKey: ["videoPosters", requestedCatagory],
     queryFn: () => fetchMovies(requestedCatagory),
     keepPreviousData: true,
   });
->>>>>>> reactQuery
 
   const moviesList = data?.results?.map((movie) => (
     <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
@@ -55,16 +39,7 @@ export default function ApiMovies({ movie, changeSrc }) {
   ));
   return (
     <>
-<<<<<<< HEAD
-      <div
-        className=" selectionNav flex justify-between p-2"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-=======
       <div className=" selectionNav flex justify-between p-2 ph-size:max-w-screen-generalSize sm:max-w-none">
->>>>>>> reactQuery
         <SelectionHeadDropdown
           name={catagoryRef.current}
           handleCatagory={handleCatagory}

@@ -32,15 +32,7 @@ export default function Head({ movieId, changeMovieId }) {
   });
 
   useEffect(() => {
-<<<<<<< HEAD
-    findData(movieId, [2000]);
-  }, [movieId]);
-
-  useEffect(() => {
-    if (selectedMovie && elementRef.current.clientHeight !== 48) {
-=======
     if (data && elementRef?.current?.clientHeight !== 48) {
->>>>>>> reactQuery
       const height = elementRef.current.clientHeight;
 
       setOverviewWidth(height);
