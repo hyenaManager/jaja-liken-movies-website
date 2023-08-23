@@ -25,9 +25,7 @@ export default function ApiMovies({ movie, changeSrc }) {
     catagoryRef.current = catagory;
   }
   useEffect(() => {
-    setTimeout(() => {
-      fetchData();
-    }, [2000]);
+    fetchData();
   }, [requestedCatagory]);
   const fetchData = async () => {
     const url = `https://api.themoviedb.org/3/movie/${requestedCatagory}?language=en-US&page=1`;
@@ -58,7 +56,12 @@ export default function ApiMovies({ movie, changeSrc }) {
   ));
   return (
     <>
-      <div className=" selectionNav flex justify-between p-2">
+      <div
+        className=" selectionNav flex justify-between p-2"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <SelectionHeadDropdown
           name={catagoryRef.current}
           handleCatagory={handleCatagory}

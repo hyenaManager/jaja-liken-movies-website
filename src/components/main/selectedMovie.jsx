@@ -28,7 +28,7 @@ export default function Head({ movieId, changeMovieId }) {
   const height = elementRef?.current?.clientHeight;
 
   useEffect(() => {
-    setTimeout(() => findData(movieId), [2000]);
+    findData(movieId, [2000]);
   }, [movieId]);
 
   useEffect(() => {

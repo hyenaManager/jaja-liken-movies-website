@@ -11,11 +11,9 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
   const slideRef = useRef(null);
   const link = "https://image.tmdb.org/t/p/original/";
   useEffect(() => {
-    setTimeout(() => {
-      if (suggestGenre) {
-        fetchTrendingMovies();
-      }
-    }, [2000]);
+    if (suggestGenre) {
+      fetchTrendingMovies();
+    }
   }, [suggestGenre]);
   useEffect(
     () =>
