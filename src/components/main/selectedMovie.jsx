@@ -10,7 +10,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import { availableDates } from "./datas";
-import axios from "axios";
 import { ImgSkeleton } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
 import SkeletonBar from "/src/skeletons/skeletons";

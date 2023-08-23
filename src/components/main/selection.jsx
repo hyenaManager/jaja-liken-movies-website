@@ -121,7 +121,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
 function Movie({ movie, changeSrc }) {
   const [isHover, setIsHover] = useState(false);
   const [imgSrc, setImgSrc] = useState(null);
-  const bgColor = getRandomInt();
+
   useEffect(() => {
     // Load the image source when the component mounts
     const source = "https://image.tmdb.org/t/p/original" + movie.poster_path;
