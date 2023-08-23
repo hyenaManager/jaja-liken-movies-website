@@ -5,22 +5,24 @@ import {
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { ImgSkeleton } from "../../skeletons/skeletons";
 
 function TrailerVideo({ toggleVideo, movieSource }) {
   const [trailerVideoIndex, SetTrailerVideoIndex] = useState(0);
-  const [fetchedVideo, setFetchedVideo] = useState(null);
-  //   const youtubeLink = "https://www.youtube.com/watch?v=";
-  var status = 1 + trailerVideoIndex;
 
-  const trailerVideos = fetchedVideo?.results?.filter(
+  var Vstatus = 1 + trailerVideoIndex;
+
+  const { status, data } = useQuery({
+    queryKey: ["trailerVideo", movieSource],
+    queryFn: () => fetchVideo(),
+  }); //fetch
+
+  const trailerVideos = data?.results?.filter(
     (movie) => movie.type.toLowerCase() === "trailer"
   ); //fetching all the trailer video
-
-  useEffect(() => {
-    fetchVideo();
-  }, [movieSource]);
 
   //for implementation of watching more trailer videos by arrow buttons
   function decreaseVideoIndex() {
@@ -38,7 +40,7 @@ function TrailerVideo({ toggleVideo, movieSource }) {
     SetTrailerVideoIndex((index) => index + 1);
   }
   //fetching video key for youtube source
-  function fetchVideo() {
+  async function fetchVideo() {
     const url = `https://api.themoviedb.org/3/movie/${movieSource.id}/videos?language=en-US`;
     const options = {
       method: "GET",
@@ -49,14 +51,17 @@ function TrailerVideo({ toggleVideo, movieSource }) {
       },
     };
 
-    axios(url, options)
-      .then((response) => {
-        setFetchedVideo(response.data);
-      })
-      .catch((error) => {
-        console.error("error:", error);
-      });
+    try {
+      const response = await axios(url, options);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
+  if (status === "loading")
+    return <p className=" text-4xl text-white">Loading....</p>;
+  if (status === "error") return <p>there is some error</p>;
 
   return (
     // video overlay
@@ -87,7 +92,7 @@ function TrailerVideo({ toggleVideo, movieSource }) {
             }}
           />
           <span className=" flex justify-center items-center bg-black w-full">
-            {status}
+            {Vstatus}
           </span>
           <FontAwesomeIcon
             icon={faArrowRight}

@@ -10,20 +10,20 @@ import axios from "axios";
 
 import { SkeletonColumn } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMovies } from "../../apis/getApi";
+import { getRandomInt } from "./mainFunctions";
 
 export default function ApiMovies({ movie, changeSrc }) {
-  const [fetchedData, setFetchedData] = useState(null);
+  // const [fetchedData, setFetchedData] = useState(null);
   const [requestedCatagory, setRequestedCatagory] = useState("popular");
   const catagoryRef = useRef("Popular");
 
-  //for console
-  const imgRef = useRef();
-  //filtering movie by type
   function handleCatagory(type, catagory) {
-    setFetchedData(null);
     setRequestedCatagory(type);
     catagoryRef.current = catagory;
   }
+<<<<<<< HEAD
   useEffect(() => {
     fetchData();
   }, [requestedCatagory]);
@@ -37,31 +37,34 @@ export default function ApiMovies({ movie, changeSrc }) {
           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZWY1ZTkwNGVkNWNkNTZiYzg3NTRmZjIyZDA4MmQ5NCIsInN1YiI6IjY0ZDcxZDY3YjZjMjY0MTE1NzUzNjIyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nOaUcA7pG53bkWSCcnxRYJRFTbY95LGjLKl0cux84S4",
       },
     };
+=======
+  const { status, data } = useQuery({
+    queryKey: ["videoPosters", requestedCatagory],
+    queryFn: () => fetchMovies(requestedCatagory),
+    keepPreviousData: true,
+  });
+>>>>>>> reactQuery
 
-    axios(url, options)
-      .then((response) => {
-        setFetchedData(response.data);
-      })
-      .catch((error) => {
-        console.error("error:", error);
-      });
-  };
-  const moviesList = fetchedData?.results?.map((movie) => (
-    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} imgRef={imgRef} />
+  const moviesList = data?.results?.map((movie) => (
+    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
   ));
   const skeletonImgs = [1, 2, 3, 4].map((num) => (
-    <div key={num}>
-      <SkeletonColumn percent={"390px"} />
+    <div key={num} className=" ph-size:max-w-screen-generalSize sm:max-w-none">
+      <SkeletonColumn percent={"300px"} />
     </div>
   ));
   return (
     <>
+<<<<<<< HEAD
       <div
         className=" selectionNav flex justify-between p-2"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
+=======
+      <div className=" selectionNav flex justify-between p-2 ph-size:max-w-screen-generalSize sm:max-w-none">
+>>>>>>> reactQuery
         <SelectionHeadDropdown
           name={catagoryRef.current}
           handleCatagory={handleCatagory}
@@ -78,9 +81,9 @@ export default function ApiMovies({ movie, changeSrc }) {
           />
         </div>
       </div>
-      <div className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4  font-head ph-size:p-1 sm:p-3">
+      <div className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6  font-head ph-size:p-1 sm:p-3">
         {moviesList}
-        {!fetchedData && skeletonImgs}
+        {status === "loading" && skeletonImgs}
       </div>
     </>
   );
@@ -140,39 +143,55 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
   );
 }
 
-function Movie({ movie, changeSrc, imgRef }) {
+function Movie({ movie, changeSrc }) {
   const [isHover, setIsHover] = useState(false);
+  const [imgSrc, setImgSrc] = useState(null);
+
+  useEffect(() => {
+    // Load the image source when the component mounts
+    const source = "https://image.tmdb.org/t/p/original" + movie.poster_path;
+    const img = new Image();
+    img.src = source;
+    img.onload = () => {
+      setImgSrc(source);
+    };
+  }, [movie.poster_path]);
+
+  if (!imgSrc) {
+    return (
+      <div
+        className={` min-h-imgHeight bg-opacity-50 rounded-md bg-red-700 `}
+      ></div>
+    );
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 0.5 }}
       animate={{ opacity: 1 }}
-      className=" flex flex-col relative"
+      className="flex flex-col relative"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      {/* blah blah */}
+      {/* Display the movie details */}
+
       <motion.img
-        initial={{ opacity: 0 }}
+        loading="lazy"
+        initial={{ opacity: 0.5 }}
         animate={{ opacity: 1 }}
-        ref={imgRef}
-        src={"https://image.tmdb.org/t/p/original" + movie.poster_path}
-        alt={movie.original_title}
-        className="rounded-md "
+        src={imgSrc}
+        className="rounded-md"
       />
-      <span className="ph-size:text-sm sm:text-lg text-white text-start capitalize">
-        {movie.original_title}
-      </span>
-      {/* check movie button */}
+
+      {/* Check movie button */}
       {isHover && (
         <motion.button
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 1.3 }}
           onClick={() => changeSrc(movie)}
-          className={
-            "p-1 pr-2 pl-2 bg-green-400 text-white rounded-3xl text-md absolute top-3 right-3 drop-shadow-xl"
-          }
+          className="p-1 pr-2 pl-2 bg-green-400 text-white rounded-3xl text-md absolute top-3 right-3 drop-shadow-xl"
         >
-          <span className=" text-white">check</span>
+          <span className="text-white">Check</span>
         </motion.button>
       )}
     </motion.div>

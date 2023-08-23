@@ -4,25 +4,36 @@ import { useEffect, useRef, useState } from "react";
 import SkeletonBar from "/src/skeletons/skeletons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { useQuery } from "@tanstack/react-query";
 
 export default function SuggestMovies({ suggestGenre, changeMovieId }) {
   const [trendingSlideWidth, setTrendingSlideWidth] = useState(null);
-  const [trendingMovies, setTrendingMovies] = useState();
+  // const [trendingMovies, setTrendingMovies] = useState();
   const slideRef = useRef(null);
   const link = "https://image.tmdb.org/t/p/original/";
+
+  const { status, data } = useQuery({
+    queryKey: ["suggestVideo", suggestGenre],
+    queryFn: () => fetchSuggestVideos(suggestGenre),
+    keepPreviousData: true,
+  });
   useEffect(() => {
+<<<<<<< HEAD
     if (suggestGenre) {
       fetchTrendingMovies();
     }
   }, [suggestGenre]);
   useEffect(
     () =>
+=======
+    if (data) {
+>>>>>>> reactQuery
       setTrendingSlideWidth(
         slideRef.current.scrollWidth - slideRef.current.offsetWidth
-      ),
-    [trendingMovies]
-  );
-  function fetchTrendingMovies() {
+      );
+    }
+  }, [data]);
+  async function fetchSuggestVideos(suggestGenre) {
     const options = {
       method: "GET",
       url:
@@ -35,15 +46,15 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
       },
     };
 
-    axios
-      .request(options)
-      .then(function (response) {
-        setTrendingMovies(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    try {
+      const response = await axios(options);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
+  if (status === "error") return <p>Error......</p>;
   return (
     <>
       <h3 className=" font-kanit p-2 ph-size:max-w-general sm:max-w-none text-white text-4xl flex justify-start bg-gradient-to-r from-purple-500 to-pink-500 ">
@@ -58,11 +69,10 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
           dragConstraints={{ right: 0, left: -trendingSlideWidth }}
           className={
             " item-slider flex " +
-            (!trendingMovies &&
-              " justify-center items-center ph-size:w-full sm:w-full")
+            (!data && " justify-center items-center ph-size:w-full sm:w-full")
           }
         >
-          {trendingMovies?.results?.map((movie) => (
+          {data?.results?.map((movie) => (
             <motion.div
               key={movie.original_title}
               className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative"
@@ -85,7 +95,7 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
               </motion.button>
             </motion.div>
           ))}
-          {!trendingMovies && (
+          {!data && (
             <div className=" flex flex-col justify-center items-center ">
               <motion.div
                 initial={{ scaleX: 0 }}
