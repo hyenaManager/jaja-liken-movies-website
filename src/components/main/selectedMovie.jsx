@@ -18,6 +18,7 @@ import "/src/styles/queries.css";
 import SuggestMovies from "./suggestions";
 import TrailerVideo from "./trailerVideo";
 import { useQuery } from "@tanstack/react-query";
+import { fetchExactMovie } from "../../apis/getApi";
 export default function Head({ movieId, changeMovieId }) {
   const [readMore, setReadMore] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
@@ -25,11 +26,9 @@ export default function Head({ movieId, changeMovieId }) {
 
   const elementRef = useRef(null);
 
-  const height = elementRef?.current?.clientHeight;
-
   const { status, data } = useQuery({
     queryKey: ["headMovie", movieId],
-    queryFn: () => fetchHeadMovie(movieId),
+    queryFn: () => fetchExactMovie(movieId),
     keepPreviousData: true,
   });
 
@@ -42,26 +41,6 @@ export default function Head({ movieId, changeMovieId }) {
   }, [data]);
 
   const link = "https://image.tmdb.org/t/p/original/";
-  //find movie by movie id
-  const fetchHeadMovie = async (id) => {
-    const options = {
-      method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZWY1ZTkwNGVkNWNkNTZiYzg3NTRmZjIyZDA4MmQ5NCIsInN1YiI6IjY0ZDcxZDY3YjZjMjY0MTE1NzUzNjIyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nOaUcA7pG53bkWSCcnxRYJRFTbY95LGjLKl0cux84S4",
-      },
-    };
-
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
 
   return (
     <>
@@ -76,7 +55,7 @@ export default function Head({ movieId, changeMovieId }) {
         {/* if error  */}
         {status === "error" && (
           <div className=" text-4x text-red-600 w-full h-full p-5">
-            This page not available.... :(
+            This page not available.... :( {}
           </div>
         )}
         {/* movie covers */}

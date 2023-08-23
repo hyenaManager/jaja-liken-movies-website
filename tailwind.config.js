@@ -19,7 +19,8 @@ export default {
       '150':'350px',
     },
     minHeight:{
-      'normal':'400px'
+      'normal':'400px',
+      'imgHeight':'250px'
     },
     maxHeight:{
       'normal':'400px',
@@ -40,7 +41,8 @@ export default {
     screens:{
       'ph-size':'300px',
       'ipad':'600px',
-      'generalSize':'480px'
+      'generalSize':'480px',
+      'sm-md':"700px",
     }
   },
   },

@@ -45,7 +45,6 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
       throw error;
     }
   }
-  if (status === "loading") return <p>Loading.....</p>;
   if (status === "error") return <p>Error......</p>;
   return (
     <>
