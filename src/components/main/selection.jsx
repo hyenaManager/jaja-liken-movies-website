@@ -10,27 +10,24 @@ import axios from "axios";
 
 import { SkeletonColumn } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ApiMovies({ movie, changeSrc }) {
-  const [fetchedData, setFetchedData] = useState(null);
+  // const [fetchedData, setFetchedData] = useState(null);
   const [requestedCatagory, setRequestedCatagory] = useState("popular");
   const catagoryRef = useRef("Popular");
 
-  //for console
-  const imgRef = useRef();
-  //filtering movie by type
   function handleCatagory(type, catagory) {
-    setFetchedData(null);
     setRequestedCatagory(type);
     catagoryRef.current = catagory;
   }
-  useEffect(() => {
-    setTimeout(() => {
-      fetchData();
-    }, [2000]);
-  }, [requestedCatagory]);
-  const fetchData = async () => {
-    const url = `https://api.themoviedb.org/3/movie/${requestedCatagory}?language=en-US&page=1`;
+  const { status, data } = useQuery({
+    queryKey: ["videoPosters", requestedCatagory],
+    queryFn: () => fetchData(requestedCatagory),
+    keepPreviousData: true,
+  });
+  const fetchData = async (page) => {
+    const url = `https://api.themoviedb.org/3/movie/${page}?language=en-US&page=1`;
     const options = {
       method: "GET",
       headers: {
@@ -40,16 +37,20 @@ export default function ApiMovies({ movie, changeSrc }) {
       },
     };
 
-    axios(url, options)
-      .then((response) => {
-        setFetchedData(response.data);
-      })
-      .catch((error) => {
-        console.error("error:", error);
-      });
+    try {
+      const response = await axios(url, options);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
-  const moviesList = fetchedData?.results?.map((movie) => (
-    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} imgRef={imgRef} />
+  if (status === "loading") return <p className=" text-4xl">Loading....</p>;
+  if (status === "error")
+    return <p className=" text-4xl">There is error......</p>;
+
+  const moviesList = data?.results?.map((movie) => (
+    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
   ));
   const skeletonImgs = [1, 2, 3, 4].map((num) => (
     <div key={num}>
@@ -77,7 +78,7 @@ export default function ApiMovies({ movie, changeSrc }) {
       </div>
       <div className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4  font-head ph-size:p-1 sm:p-3">
         {moviesList}
-        {!fetchedData && skeletonImgs}
+        {!data && skeletonImgs}
       </div>
     </>
   );
@@ -137,7 +138,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
   );
 }
 
-function Movie({ movie, changeSrc, imgRef }) {
+function Movie({ movie, changeSrc }) {
   const [isHover, setIsHover] = useState(false);
   return (
     <motion.div
@@ -151,7 +152,6 @@ function Movie({ movie, changeSrc, imgRef }) {
       <motion.img
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        ref={imgRef}
         src={"https://image.tmdb.org/t/p/original" + movie.poster_path}
         alt={movie.original_title}
         className="rounded-md "

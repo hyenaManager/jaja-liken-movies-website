@@ -17,8 +17,8 @@ import SkeletonBar from "/src/skeletons/skeletons";
 import "/src/styles/queries.css";
 import SuggestMovies from "./suggestions";
 import TrailerVideo from "./trailerVideo";
+import { useQuery } from "@tanstack/react-query";
 export default function Head({ movieId, changeMovieId }) {
-  const [selectedMovie, setSelectedMovie] = useState(null);
   const [readMore, setReadMore] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
   const [watchTrailer, setWatchTrailer] = useState(false);
@@ -27,21 +27,23 @@ export default function Head({ movieId, changeMovieId }) {
 
   const height = elementRef?.current?.clientHeight;
 
-  useEffect(() => {
-    setTimeout(() => findData(movieId), [2000]);
-  }, [movieId]);
+  const { status, data } = useQuery({
+    queryKey: ["headMovie", movieId],
+    queryFn: () => fetchHeadMovie(movieId),
+    keepPreviousData: true,
+  });
 
   useEffect(() => {
-    if (selectedMovie && elementRef.current.clientHeight !== 48) {
+    if (data && elementRef?.current?.clientHeight !== 48) {
       const height = elementRef.current.clientHeight;
 
       setOverviewWidth(height);
     }
-  }, [selectedMovie]);
+  }, [data]);
 
   const link = "https://image.tmdb.org/t/p/original/";
   //find movie by movie id
-  const findData = async (id) => {
+  const fetchHeadMovie = async (id) => {
     const options = {
       method: "GET",
       url: `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
@@ -52,26 +54,31 @@ export default function Head({ movieId, changeMovieId }) {
       },
     };
 
-    axios
-      .request(options)
-      .then(function (response) {
-        setSelectedMovie(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    try {
+      const response = await axios(options);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
+
   return (
     <>
       <div
         className={
-          "headParentDiv relative  mt-10 pt-4 pb-5" +
-          (!selectedMovie && " bg-slate-300")
+          "headParentDiv relative  mt-10 pt-4 pb-5" + (!data && " bg-slate-300")
         }
         style={{
-          backgroundImage: `url(${link + selectedMovie?.backdrop_path})`,
+          backgroundImage: `url(${link + data?.backdrop_path})`,
         }}
       >
+        {/* if error  */}
+        {status === "error" && (
+          <div className=" text-4x text-red-600 w-full h-full p-5">
+            This page not available.... :(
+          </div>
+        )}
         {/* movie covers */}
 
         <div
@@ -81,13 +88,13 @@ export default function Head({ movieId, changeMovieId }) {
         >
           {/* movie img */}
 
-          {!selectedMovie ? (
+          {!data ? (
             <ImgSkeleton />
           ) : (
             <motion.img
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              src={link + selectedMovie?.poster_path}
+              src={link + data?.poster_path}
               className=" w-80 h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white"
               alt="instetallar"
             />
@@ -99,33 +106,33 @@ export default function Head({ movieId, changeMovieId }) {
             style={{ textShadow: "2px 2px 8px black" }}
           >
             <span className="  mb-3 text-lg font-bold">
-              {selectedMovie?.release_date}
-              {!selectedMovie && <SkeletonBar percent={"20%"} />}
+              {data?.release_date}
+              {!data && <SkeletonBar percent={"20%"} />}
             </span>
             <h2 className=" ph-size:text-sm sm:text-4xl mb-3 font-bold drop-shadow-md capitalize">
-              {selectedMovie?.title}
-              {!selectedMovie && <SkeletonBar percent={"50%"} />}
+              {data?.title}
+              {!data && <SkeletonBar percent={"50%"} />}
             </h2>
             {/* about movie */}
             <div className="flex  mb-3 text-lg ">
               <span className=" mr-4 drop-shadow-md ">
-                {selectedMovie?.genres?.[1]?.name}
-                {!selectedMovie && <SkeletonBar percent={"50px"} />}
+                {data?.genres?.[1]?.name}
+                {!data && <SkeletonBar percent={"50px"} />}
               </span>
               <ul className=" flex  ">
                 <li className=" mr-3 ml-3 drop-shadow-md border-b-4 border-green-500">
-                  {selectedMovie?.genres?.[2]?.name}
-                  {!selectedMovie && <SkeletonBar percent={"50px"} />}
+                  {data?.genres?.[2]?.name}
+                  {!data && <SkeletonBar percent={"50px"} />}
                 </li>
                 <li className=" mr-3 ml-3 drop-shadow-md border-b-4 border-green-500">
-                  {selectedMovie?.genres?.[0]?.name}
-                  {!selectedMovie && <SkeletonBar percent={"50px"} />}
+                  {data?.genres?.[0]?.name}
+                  {!data && <SkeletonBar percent={"50px"} />}
                 </li>
               </ul>
             </div>
             {/* short story or overview  text */}
             <div className=" mb-3 text-xl drop-shadow-m6 text-slate-100 font-pureStyle">
-              {selectedMovie && (
+              {data && (
                 <p
                   ref={elementRef}
                   //implement readmore function only when the text is heigher that 48px
@@ -135,12 +142,12 @@ export default function Head({ movieId, changeMovieId }) {
                       : null
                   }
                 >
-                  {selectedMovie?.overview}
+                  {data?.overview}
                 </p>
               )}
               {/* read MOre button */}
               {/* show the readmore button only when api is fetched and text width is > 48px */}
-              {selectedMovie && overviewWidth > 56 && (
+              {data && overviewWidth > 56 && (
                 <button
                   className=" flex justify-start items-center text-white "
                   onClick={() => setReadMore(!readMore)}
@@ -157,18 +164,18 @@ export default function Head({ movieId, changeMovieId }) {
                 </button>
               )}
 
-              {!selectedMovie && <SkeletonBar percent={"90%"} />}
-              {!selectedMovie && <SkeletonBar percent={"85%"} />}
-              {!selectedMovie && <SkeletonBar percent={"70%"} />}
-              {!selectedMovie && <SkeletonBar percent={"40%"} />}
+              {!data && <SkeletonBar percent={"90%"} />}
+              {!data && <SkeletonBar percent={"85%"} />}
+              {!data && <SkeletonBar percent={"70%"} />}
+              {!data && <SkeletonBar percent={"40%"} />}
             </div>
             {/* movies rating and time */}
             <ul className=" list-none flex mb-3 text-lg">
               <li className=" flex mr-10 justify-start items-center">
                 <FontAwesomeIcon icon={faClock} className=" text-teal-300" />
                 <span>
-                  {selectedMovie && selectedMovie.runtime + " min"}
-                  {!selectedMovie && <SkeletonBar percent={"70px"} />}
+                  {data && data.runtime + " min"}
+                  {!data && <SkeletonBar percent={"70px"} />}
                 </span>
               </li>
               <li className=" flex mr-10 justify-start items-center">
@@ -177,8 +184,8 @@ export default function Head({ movieId, changeMovieId }) {
                   className=" text-slate-200"
                 />
                 <span>
-                  {selectedMovie && "subtitle"}
-                  {!selectedMovie && <SkeletonBar percent={"70px"} />}
+                  {data && "subtitle"}
+                  {!data && <SkeletonBar percent={"70px"} />}
                 </span>
               </li>
               <li className=" flex justify-start items-center">
@@ -187,14 +194,13 @@ export default function Head({ movieId, changeMovieId }) {
                   className=" text-yellow-500 text-xl flex items-center justify-center"
                 />
                 <span>
-                  {selectedMovie &&
-                    "imdb " + selectedMovie?.vote_average + " /10"}
-                  {!selectedMovie && <SkeletonBar percent={"70px"} />}
+                  {data && "imdb " + data?.vote_average + " /10"}
+                  {!data && <SkeletonBar percent={"70px"} />}
                 </span>
               </li>
             </ul>
             {/* option mode show only after api is fteched */}
-            {selectedMovie && (
+            {data && (
               <div className=" flex justify-start items-center">
                 {/* trailer button*/}
                 <button
@@ -214,12 +220,12 @@ export default function Head({ movieId, changeMovieId }) {
         {watchTrailer && (
           <TrailerVideo
             toggleVideo={() => setWatchTrailer(!watchTrailer)}
-            movieSource={selectedMovie}
+            movieSource={data}
           />
         )}
       </div>
       <SuggestMovies
-        suggestGenre={selectedMovie?.genres?.[0]?.id}
+        suggestGenre={data?.genres?.[0]?.id}
         changeMovieId={changeMovieId}
       />
     </>
