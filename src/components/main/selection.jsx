@@ -6,7 +6,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 
 import { SkeletonColumn } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
@@ -14,7 +13,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
 export default function ApiMovies({ movie, changeSrc }) {
-  // const [fetchedData, setFetchedData] = useState(null);
   const [requestedCatagory, setRequestedCatagory] = useState("popular");
   const catagoryRef = useRef("Popular");
 
@@ -43,6 +41,7 @@ export default function ApiMovies({ movie, changeSrc }) {
           name={catagoryRef.current}
           handleCatagory={handleCatagory}
         />
+
         <div className="flex justify-start items-center">
           <input
             type="text"
@@ -97,7 +96,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
         aria-orientation="vertical"
         aria-labelledby="options-menu"
       >
-        <div className="py-1 overflow-x-hidden " role="none">
+        <div className="py-1 overflow-x-hidden scroll" role="none">
           {Type.map((data, index) => (
             <button
               onClick={() => {
@@ -108,7 +107,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
               className=" cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200 hover:text-gray-900"
               role="menuitem"
             >
-              {data}
+              <div className=" min-w-hundred">{data}</div>
             </button>
           ))}
         </div>

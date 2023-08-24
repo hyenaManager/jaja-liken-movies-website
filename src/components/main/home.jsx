@@ -1,27 +1,32 @@
-import { useEffect, useRef, useState, useTransition } from "react";
-import axios from "axios";
+import { useRef, useState, useTransition } from "react";
 import Head from "./selectedMovie";
 import ApiMovies from "./selection";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
-function Home() {
+console.log("this is local storage" + localStorage);
+
+function Main() {
   const [movieId, setMovieId] = useState(null);
   const headRef = useRef(null);
-  // const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   function changeSrcId(src) {
-    setMovieId(src.id);
+    jumpToTop();
+    startTransition(() =>
+      setTimeout(() => {
+        setMovieId(src.id);
+      }, 700)
+    );
   }
-  useEffect(() => {
+
+  function jumpToTop() {
     //scroll selected movie to up
-    if (movieId !== null) {
-      headRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, [movieId]);
+    headRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
   //for the first time movieId
   const { status, data } = useQuery({
@@ -46,4 +51,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Main;

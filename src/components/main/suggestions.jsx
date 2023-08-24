@@ -1,4 +1,3 @@
-import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import SkeletonBar from "/src/skeletons/skeletons";
@@ -27,12 +26,12 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
   if (status === "error") return <p>Error......</p>;
   return (
     <>
-      <h3 className=" font-kanit p-2 ph-size:max-w-general sm:max-w-none text-white text-4xl flex justify-start bg-gradient-to-r from-purple-500 to-pink-500 ">
+      <h3 className=" border-t-4 border-white font-kanit p-2 ph-size:max-w-general sm:max-w-none text-white text-4xl flex justify-start bg-gradient-to-r from-purple-500 to-pink-500 ">
         You may also like
       </h3>
       <div
         ref={slideRef}
-        className=" overflow-hidden cursor-grab ph-size:max-w-general sm:max-w-none flex bg-gradient-to-r from-purple-500 to-pink-500 sm:h-80"
+        className=" border-b-4 border-white overflow-hidden cursor-grab ph-size:max-w-general sm:max-w-none flex bg-gradient-to-r from-purple-500 to-pink-500 sm:h-80"
       >
         <motion.div
           drag="x"
@@ -99,7 +98,7 @@ function Movie({ movie, changeMovieId }) {
   return (
     <motion.div
       key={movie.original_title}
-      className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative"
+      className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative "
     >
       {!imgSrc ? (
         <div

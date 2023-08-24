@@ -1,15 +1,13 @@
 import {
-  faCircle,
   faClock,
   faClosedCaptioning,
   faEllipsis,
   faPlay,
+  faPlus,
   faStar,
-  faStarHalfStroke,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
-import { availableDates } from "./datas";
 import { ImgSkeleton } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
 import SkeletonBar from "/src/skeletons/skeletons";
@@ -185,7 +183,7 @@ export default function Head({ movieId, changeMovieId }) {
                 </span>
               </li>
             </ul>
-            {/* option mode show only after api is fteched */}
+            {/* option mode watch trailer and add wishlist mode show only after api is fteched */}
             {data && (
               <div className=" flex justify-start items-center">
                 {/* trailer button*/}
@@ -196,7 +194,14 @@ export default function Head({ movieId, changeMovieId }) {
                   <FontAwesomeIcon icon={faPlay} className="mr-2 text-white" />
                   <span className=" text-white">watch trailer</span>
                 </button>
-                {/* favaorite button */}
+                {/* add to wishlist button */}
+                <button
+                  // onClick={() => setWatchTrailer(!watchTrailer)}
+                  className=" mr-5 p-3 pr-4 pl-4 hover:bg-green-700 bg-green-500 text-white rounded-3xl text-lg"
+                >
+                  <FontAwesomeIcon icon={faPlus} className="mr-2 text-white" />
+                  <span className=" text-white">wishlist</span>
+                </button>
               </div>
             )}
           </div>

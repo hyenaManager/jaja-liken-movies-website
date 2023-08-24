@@ -2,13 +2,16 @@ import { faBars, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar({ toggleNav }) {
   const [selectedNav, setSelectedNav] = useState("main");
+  const bottomBarClass = " border-b-2 border-b-red-600";
+
   return (
     <>
       <nav className="navbar flex justify-between items-center text-white  fixed top-0 right-0 left-0 bg-slate-900 p-2 z-30">
-        <div className=" font-kanit uppercase text-4xl flex items-center mr-5">
+        <div className=" font-kanit uppercase text-4xl flex items-center mr-14">
           <FontAwesomeIcon icon={faVideo} className=" text-red-500 mr-3" />
           <span className=" text-2xl font-head font-bold">Liken</span>
         </div>
@@ -17,7 +20,7 @@ export default function Navbar({ toggleNav }) {
             onClick={() => setSelectedNav("main")}
             className={
               "  hover:text-red-300 p-2  text-sm " +
-              (selectedNav === "main" && " border-b-4 border-b-red-600")
+              (selectedNav === "main" && bottomBarClass)
             }
           >
             main
@@ -26,37 +29,37 @@ export default function Navbar({ toggleNav }) {
             onClick={() => setSelectedNav("schedules")}
             className={
               "  hover:text-red-300 p-2  text-sm " +
-              (selectedNav === "schedules" && " border-b-4 border-b-red-600")
+              (selectedNav === "schedules" && bottomBarClass)
             }
           >
-            favourite
+            wishlist
           </li>
           <li
             onClick={() => setSelectedNav("tickets")}
             className={
               "  hover:text-red-300 p-2  text-sm " +
-              (selectedNav === "tickets" && " border-b-4 border-b-red-600")
+              (selectedNav === "tickets" && bottomBarClass)
             }
           >
-            news
-          </li>
-          <li
-            onClick={() => setSelectedNav("news")}
-            className={
-              "  hover:text-red-300 p-2  text-sm " +
-              (selectedNav === "news" && " border-b-4 border-b-red-600")
-            }
-          >
-            search
+            Liken social
           </li>
           <li
             onClick={() => setSelectedNav("contact")}
             className={
               "  hover:text-red-300 p-2  text-sm " +
-              (selectedNav === "contact" && " border-b-4 border-b-red-600")
+              (selectedNav === "contact" && bottomBarClass)
             }
           >
             contact
+          </li>
+          <li
+            onClick={() => setSelectedNav("search")}
+            className={
+              "  hover:text-red-300 p-2  text-sm " +
+              (selectedNav === "search" && bottomBarClass)
+            }
+          >
+            <Link to={"search"}>search</Link>{" "}
           </li>
           <li
             onClick={() => setSelectedNav("login")}
