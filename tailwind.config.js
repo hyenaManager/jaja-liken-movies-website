@@ -17,10 +17,12 @@ export default {
     minWidth:{
       '100':'250px',
       '150':'350px',
+      'hundred':'100px'
     },
     minHeight:{
       'normal':'400px',
-      'imgHeight':'250px'
+      'imgHeight':'250px',
+      'hundred':'100px'
     },
     maxHeight:{
       'normal':'400px',

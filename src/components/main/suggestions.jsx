@@ -5,55 +5,25 @@ import SkeletonBar from "/src/skeletons/skeletons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
+import { fetchSuggestVideos } from "../../apis/getApi";
 
 export default function SuggestMovies({ suggestGenre, changeMovieId }) {
   const [trendingSlideWidth, setTrendingSlideWidth] = useState(null);
-  // const [trendingMovies, setTrendingMovies] = useState();
   const slideRef = useRef(null);
-  const link = "https://image.tmdb.org/t/p/original/";
 
   const { status, data } = useQuery({
     queryKey: ["suggestVideo", suggestGenre],
     queryFn: () => fetchSuggestVideos(suggestGenre),
-    keepPreviousData: true,
+    keepPreviousData: false,
   });
   useEffect(() => {
-<<<<<<< HEAD
-    if (suggestGenre) {
-      fetchTrendingMovies();
-    }
-  }, [suggestGenre]);
-  useEffect(
-    () =>
-=======
     if (data) {
->>>>>>> reactQuery
       setTrendingSlideWidth(
         slideRef.current.scrollWidth - slideRef.current.offsetWidth
       );
     }
   }, [data]);
-  async function fetchSuggestVideos(suggestGenre) {
-    const options = {
-      method: "GET",
-      url:
-        "https://api.themoviedb.org/3/discover/movie?api_key=3ef5e904ed5cd56bc8754ff22d082d94&with_genres=" +
-        suggestGenre,
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZWY1ZTkwNGVkNWNkNTZiYzg3NTRmZjIyZDA4MmQ5NCIsInN1YiI6IjY0ZDcxZDY3YjZjMjY0MTE1NzUzNjIyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nOaUcA7pG53bkWSCcnxRYJRFTbY95LGjLKl0cux84S4",
-      },
-    };
 
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
   if (status === "error") return <p>Error......</p>;
   return (
     <>
@@ -73,27 +43,7 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
           }
         >
           {data?.results?.map((movie) => (
-            <motion.div
-              key={movie.original_title}
-              className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative"
-            >
-              <motion.img
-                alt={movie.original_title}
-                src={link + movie.poster_path}
-                className=" w-full h-full cursor-grab pointer-events-none "
-              />
-              <motion.button
-                whileHover={{ scale: 1.3 }}
-                onClick={() => {
-                  changeMovieId(movie);
-                }}
-                className={
-                  "p-1 pr-2 pl-2 bg-fuchsia-600 text-white rounded-full drop-shadow-xl text-md absolute top-2 right-2 z-20"
-                }
-              >
-                <span className=" text-white">check</span>
-              </motion.button>
-            </motion.div>
+            <Movie movie={movie} key={movie.poster_path} />
           ))}
           {!data && (
             <div className=" flex flex-col justify-center items-center ">
@@ -126,5 +76,50 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
         </motion.div>
       </div>
     </>
+  );
+}
+
+function Movie({ movie }) {
+  const [imgSrc, setImgSrc] = useState(null);
+  const link = "https://image.tmdb.org/t/p/original";
+
+  useEffect(() => {
+    // Load the image source when the component mounts
+    const source = link + movie.poster_path;
+    const img = new Image();
+    img.src = source;
+    img.onload = () => {
+      setImgSrc(source);
+    };
+  }, []);
+  return (
+    <motion.div
+      key={movie.original_title}
+      className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative"
+    >
+      {!imgSrc ? (
+        <div
+          className={` min-h-full min-w-full bg-opacity-50 rounded-md bg-red-900 `}
+        ></div>
+      ) : (
+        <motion.img
+          initial={{ opacity: 0.5 }}
+          animate={{ opacity: 1 }}
+          src={imgSrc}
+          className=" w-full h-full cursor-grab pointer-events-none "
+        />
+      )}
+      <motion.button
+        whileHover={{ scale: 1.3 }}
+        onClick={() => {
+          changeMovieId(movie);
+        }}
+        className={
+          "p-1 pr-2 pl-2 bg-fuchsia-600 text-white rounded-full drop-shadow-xl text-md absolute top-2 right-2 z-20"
+        }
+      >
+        <span className=" text-white">check</span>
+      </motion.button>
+    </motion.div>
   );
 }

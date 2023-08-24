@@ -32,7 +32,7 @@ export default function ApiMovies({ movie, changeSrc }) {
   const moviesList = data?.results?.map((movie) => (
     <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
   ));
-  const skeletonImgs = [1, 2, 3, 4].map((num) => (
+  const skeletonImgs = [1, 2, 3, 4, 5, 6].map((num) => (
     <div key={num} className=" ph-size:max-w-screen-generalSize sm:max-w-none">
       <SkeletonColumn percent={"300px"} />
     </div>
@@ -135,7 +135,7 @@ function Movie({ movie, changeSrc }) {
   if (!imgSrc) {
     return (
       <div
-        className={` min-h-imgHeight bg-opacity-50 rounded-md bg-red-700 `}
+        className={` min-h-imgHeight bg-opacity-50 rounded-md bg-red-900 `}
       ></div>
     );
   }

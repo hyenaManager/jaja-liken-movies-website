@@ -22,8 +22,8 @@ export default function Head({ movieId, changeMovieId }) {
   const [readMore, setReadMore] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
   const [watchTrailer, setWatchTrailer] = useState(false);
-
   const elementRef = useRef(null);
+  const [imgSrc, setImgSrc] = useState(null);
 
   const { status, data } = useQuery({
     queryKey: ["headMovie", movieId],
@@ -40,6 +40,15 @@ export default function Head({ movieId, changeMovieId }) {
   }, [data]);
 
   const link = "https://image.tmdb.org/t/p/original/";
+  useEffect(() => {
+    // Load the image source when the component mounts
+    const source = link + data?.poster_path;
+    const img = new Image();
+    img.src = source;
+    img.onload = () => {
+      setImgSrc(source);
+    };
+  }, [data?.poster_path]);
 
   return (
     <>
@@ -54,7 +63,7 @@ export default function Head({ movieId, changeMovieId }) {
         {/* if error  */}
         {status === "error" && (
           <div className=" text-4x text-red-600 w-full h-full p-5">
-            This page not available.... :( {}
+            This page not available.... :(
           </div>
         )}
         {/* movie covers */}
@@ -66,15 +75,14 @@ export default function Head({ movieId, changeMovieId }) {
         >
           {/* movie img */}
 
-          {!data ? (
+          {!data && !imgSrc ? (
             <ImgSkeleton />
           ) : (
             <motion.img
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 0.5 }}
               animate={{ opacity: 1 }}
-              src={link + data?.poster_path}
-              className=" w-80 h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white"
-              alt="instetallar"
+              src={imgSrc}
+              className=" w-80 h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-900"
             />
           )}
 
