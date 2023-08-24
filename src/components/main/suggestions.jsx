@@ -43,7 +43,11 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
           }
         >
           {data?.results?.map((movie) => (
-            <Movie movie={movie} key={movie.poster_path} />
+            <Movie
+              movie={movie}
+              key={movie.poster_path}
+              changeMovieId={changeMovieId}
+            />
           ))}
           {!data && (
             <div className=" flex flex-col justify-center items-center ">
@@ -79,7 +83,7 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
   );
 }
 
-function Movie({ movie }) {
+function Movie({ movie, changeMovieId }) {
   const [imgSrc, setImgSrc] = useState(null);
   const link = "https://image.tmdb.org/t/p/original";
 

@@ -12,7 +12,6 @@ import { SkeletonColumn } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
-import { getRandomInt } from "./mainFunctions";
 
 export default function ApiMovies({ movie, changeSrc }) {
   // const [fetchedData, setFetchedData] = useState(null);
