@@ -5,6 +5,8 @@ import Navbar, { SmallNavbar } from "./components/main/navbar";
 import { useState } from "react";
 import Main from "./components/main/home";
 import Search from "./components/search/search";
+import Detail from "./components/search/detail";
+import Head from "./components/main/selectedMovie";
 
 function App() {
   const [smallNav, setSmallNav] = useState(false);
@@ -24,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/search/:movieId" element={<Detail />} />
       </Routes>
     </>
   );

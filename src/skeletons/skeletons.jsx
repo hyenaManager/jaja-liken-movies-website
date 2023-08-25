@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export function ImgSkeleton() {
   return (
     <>
-      <div className=" relative w-64 mr-4 h-96 rounded-lg bg-slate-400 overflow-hidden">
+      <div className=" relative w-64 mr-4 h-full rounded-lg bg-slate-400 overflow-hidden">
         <Flashing />
       </div>
     </>

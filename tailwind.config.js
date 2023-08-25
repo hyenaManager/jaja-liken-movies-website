@@ -35,10 +35,12 @@ export default {
     },
     height: {
       '103': '400px',
-      'almost':'93%'
+      'almost':'93%',
+      'fullvh':'100vh'
     },
     width:{
-      '78':"310px"
+      '78':"310px",
+      'fullvw':"100vw"
     },
     screens:{
       'ph-size':'300px',

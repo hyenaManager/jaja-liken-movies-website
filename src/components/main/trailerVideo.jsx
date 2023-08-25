@@ -12,18 +12,19 @@ import { ImgSkeleton } from "../../skeletons/skeletons";
 
 function TrailerVideo({ toggleVideo, movieSource }) {
   const [trailerVideoIndex, SetTrailerVideoIndex] = useState(0);
+  const [trailerOrTeaser, setTrailerOrTeaser] = useState("trailer");
 
-  var Vstatus = 1 + trailerVideoIndex;
+  var VideoNumberStatus = 1 + trailerVideoIndex;
 
   const { status, data } = useQuery({
-    queryKey: ["trailerVideo", movieSource],
+    queryKey: ["trailerVideo", movieSource.id],
     queryFn: () => fetchVideo(),
   }); //fetch
 
-  const trailerVideos = data?.results?.filter(
-    (movie) => movie.type.toLowerCase() === "trailer"
-  ); //fetching all the trailer video
-
+  const trailerVideos = data?.results?.filter((movie) => {
+    return movie.type.toLowerCase() === trailerOrTeaser;
+  }); //fetching all the trailer video
+  console.log(trailerVideos);
   //for implementation of watching more trailer videos by arrow buttons
   function decreaseVideoIndex() {
     if (trailerVideoIndex === 0) {
@@ -59,8 +60,6 @@ function TrailerVideo({ toggleVideo, movieSource }) {
       throw error;
     }
   }
-  if (status === "loading")
-    return <p className=" text-4xl text-white">Loading....</p>;
   if (status === "error") return <p>there is some error</p>;
 
   return (
@@ -73,36 +72,71 @@ function TrailerVideo({ toggleVideo, movieSource }) {
     >
       {/* video container */}
       <div className="video-container flex flex-col ph-size:w-fit ph-size:h-1/2 sm:w-3/4 sm:h-almost z-30  relative ">
-        <iframe
-          className=" w-full h-full"
-          src={`https://www.youtube.com/embed/${trailerVideos?.[trailerVideoIndex]?.key}`}
-          title="YouTube video player"
-          allowFullScreen
-        ></iframe>
-        <span className=" flex justify-center items-center bg-black p-1">
-          {trailerVideos?.[trailerVideoIndex]?.name}
-        </span>
-        <div className=" flex justify-between">
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            className=" text-xl p-2 bg-red-500 "
-            onClick={(e) => {
-              decreaseVideoIndex();
-              e.stopPropagation();
-            }}
-          />
-          <span className=" flex justify-center items-center bg-black w-full">
-            {Vstatus}
-          </span>
-          <FontAwesomeIcon
-            icon={faArrowRight}
-            className=" text-xl p-2 bg-red-500 "
-            onClick={(e) => {
-              increaseVideoIndex();
-              e.stopPropagation();
-            }}
-          />
-        </div>
+        {trailerVideos?.length === 0 ? (
+          <div className=" w-full h-full flex flex-col justify-center items-center text-2xl bg-slate-950 text-red-300">
+            <span>
+              {trailerOrTeaser === "trailer" ? "Trailer" : "Teaser"} video not
+              available 🤧
+            </span>
+            <button
+              onClick={(e) => {
+                setTrailerOrTeaser(
+                  trailerOrTeaser === "trailer" ? "teaser" : "trailer"
+                );
+                e.stopPropagation();
+              }}
+            >
+              Watch {trailerOrTeaser === "trailer" ? "Teaser" : "Trailer"}{" "}
+              instead?😀
+            </button>
+          </div>
+        ) : (
+          <>
+            <iframe
+              className=" w-full h-full"
+              src={`https://www.youtube.com/embed/${trailerVideos?.[trailerVideoIndex]?.key}`}
+              title="YouTube video player"
+              allowFullScreen
+            ></iframe>
+            <span className=" flex justify-center items-center bg-black p-1">
+              {trailerVideos?.[trailerVideoIndex]?.name}
+            </span>
+            <div className=" flex justify-between">
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className=" text-xl p-2 bg-red-500 "
+                onClick={(e) => {
+                  decreaseVideoIndex();
+                  e.stopPropagation();
+                }}
+              />
+              {/* video number  */}
+              <span className=" flex justify-center items-center bg-black w-full">
+                {VideoNumberStatus}
+              </span>
+              {/* change trailer mode */}
+              <button
+                onClick={(e) => {
+                  setTrailerOrTeaser(
+                    trailerOrTeaser === "trailer" ? "teaser" : "trailer"
+                  );
+                  e.stopPropagation();
+                }}
+                className=" bg-black"
+              >
+                {trailerOrTeaser === "trailer" ? "Teaser" : "Trailer"} Video
+              </button>
+              <FontAwesomeIcon
+                icon={faArrowRight}
+                className=" text-xl p-2 bg-red-500 "
+                onClick={(e) => {
+                  increaseVideoIndex();
+                  e.stopPropagation();
+                }}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

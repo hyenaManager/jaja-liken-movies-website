@@ -23,7 +23,7 @@ export default function Navbar({ toggleNav }) {
               (selectedNav === "main" && bottomBarClass)
             }
           >
-            main
+            <Link to={"/"}>main</Link>
           </li>
           <li
             onClick={() => setSelectedNav("schedules")}
@@ -102,7 +102,7 @@ export function SmallNavbar({ toggleNav }) {
             // onClick={() => setSelectedNav("main")}
             className={"  hover:text-red-300 p-2  text-sm cursor-pointer"}
           >
-            main
+            <Link to={"/"}>main</Link>
           </li>
           <li
             // onClick={() => setSelectedNav("schedules")}
