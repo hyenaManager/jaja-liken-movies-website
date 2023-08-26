@@ -11,11 +11,8 @@ function Main() {
 
   function changeSrcId(src) {
     jumpToTop();
-    startTransition(() =>
-      setTimeout(() => {
-        setMovieId(src.id);
-      }, 700)
-    );
+
+    setMovieId(src.id);
   }
 
   function jumpToTop() {

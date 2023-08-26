@@ -21,7 +21,8 @@ export default function Head({ movieId, changeMovieId }) {
   const [overviewWidth, setOverviewWidth] = useState(null);
   const [watchTrailer, setWatchTrailer] = useState(false);
   const elementRef = useRef(null);
-  const [imgSrc, setImgSrc] = useState(null);
+  const [imageIsLoaded, setImageIsLoaded] = useState(false);
+  const [backDropImgSrc, setBackDropImgSrc] = useState(null);
 
   const { status, data } = useQuery({
     queryKey: ["headMovie", movieId],
@@ -38,15 +39,24 @@ export default function Head({ movieId, changeMovieId }) {
   }, [data]);
 
   const link = "https://image.tmdb.org/t/p/original/";
-  useEffect(() => {
-    // Load the image source when the component mounts
-    const source = link + data?.poster_path;
-    const img = new Image();
-    img.src = source;
-    img.onload = () => {
-      setImgSrc(source);
-    };
-  }, [data?.poster_path]);
+  // useEffect(() => {
+  //   // Load the poster image source when it done render img
+  //   const source = link + data?.poster_path;
+  //   const img = new Image();
+  //   img.src = source;
+  //   img.onload = () => {
+  //     setImgSrc(source);
+  //   };
+  // }, [data?.poster_path]);
+  // useEffect(() => {
+  //   //load the backdrop image source when it done reder img
+  //   const source = link + data?.backdrop_path;
+  //   const img = new Image();
+  //   img.src = source;
+  //   img.onload = () => {
+  //     setBackDropImgSrc(source);
+  //   };
+  // }, [data?.backdrop_path]);
 
   return (
     <>
@@ -73,14 +83,16 @@ export default function Head({ movieId, changeMovieId }) {
         >
           {/* movie img */}
 
-          {!data && !imgSrc ? (
+          {!data ? (
             <ImgSkeleton />
           ) : (
             <motion.img
-              initial={{ opacity: 0.5 }}
-              animate={{ opacity: 1 }}
-              src={imgSrc}
-              className=" w-80 h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white "
+              initial={{ opacity: 0 }}
+              animate={{ opacity: imageIsLoaded ? 1 : 0 }}
+              transition={{ duration: 0.8 }}
+              src={link + data?.poster_path}
+              onLoad={() => setImageIsLoaded(true)}
+              className=" h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-500 "
             />
           )}
 

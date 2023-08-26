@@ -1,13 +1,13 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import "./index.css";
 import { AnimatePresence } from "framer-motion";
-import Navbar, { SmallNavbar } from "./components/main/navbar";
-import { useState } from "react";
-import Main from "./components/main/home";
-import Search from "./components/search/search";
-import Detail from "./components/search/detail";
-import Head from "./components/main/selectedMovie";
+import { SmallNavbar } from "./components/main/navbar";
+import { Suspense, lazy, useState } from "react";
 
+const Main = lazy(() => import("./components/main/home"));
+const Search = lazy(() => import("./components/search/search"));
+const Detail = lazy(() => import("./components/search/detail"));
+const Navbar = lazy(() => import("./components/main/navbar"));
 function App() {
   const [smallNav, setSmallNav] = useState(false);
   function toggleNav() {
@@ -24,9 +24,30 @@ function App() {
       </AnimatePresence>
 
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/search/:movieId" element={<Detail />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<div>Loading....</div>}>
+              <Main />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <Suspense fallback={<div>Loading......</div>}>
+              <Search />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/search/:movieId"
+          element={
+            <Suspense fallback={<div>Loading....</div>}>
+              <Detail />
+            </Suspense>
+          }
+        />
       </Routes>
     </>
   );
