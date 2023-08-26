@@ -17,6 +17,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchExactMovie } from "../../apis/getApi";
 import { useParams } from "react-router-dom";
 import TrailerVideo from "../main/trailerVideo";
+import { SkeletonColumn } from "../../skeletons/skeletons";
+import Credits from "./movieCredit";
 
 export default function Detail() {
   const { movieId } = useParams();
@@ -31,6 +33,7 @@ export default function Detail() {
     queryFn: () => fetchExactMovie(movieId),
     keepPreviousData: true,
   });
+  console.log(movieId);
 
   const link = "https://image.tmdb.org/t/p/original/";
   useEffect(() => {
@@ -47,8 +50,7 @@ export default function Detail() {
     <>
       <div
         className={
-          "headParentDiv relative  mt-14 pb-5 h-fullvh" +
-          (!data && " bg-slate-300")
+          "headParentDiv relative  mt-14 h-fullvh " + (!data && " bg-slate-300")
         }
         style={{
           backgroundImage: `url(${link + data?.backdrop_path})`,
@@ -69,18 +71,21 @@ export default function Detail() {
         >
           {/* movie img */}
 
-          {!data && !imgSrc ? (
-            <div className=" w-1/4 h-1/4">
-              <ImgSkeleton />
-            </div>
+          {!data ? (
+            <ImgSkeleton />
           ) : (
             <motion.img
               initial={{ opacity: 0.5 }}
               animate={{ opacity: 1 }}
               src={imgSrc}
-              className=" w-1/4 h-1/4 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-900"
+              className=" h-px4 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white "
             />
           )}
+          {/* <motion.div
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: 1 }}
+            className=" w-px5 h-103 mr-4  rounded-lg drop-shadow-md border-2 border-white "
+          ></motion.div> */}
 
           {/* movie details */}
           <div
@@ -211,6 +216,7 @@ export default function Detail() {
             movieSource={data}
           />
         )}
+        <Credits movieId={movieId} />
       </div>
     </>
   );

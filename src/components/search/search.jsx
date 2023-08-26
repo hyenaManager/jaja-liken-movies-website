@@ -15,6 +15,7 @@ export default function Search() {
   const { data, status, error, isFetching } = useQuery({
     queryKey: ["searchMovie", searchName],
     queryFn: () => fetchMovieByName(searchName),
+    keepPreviousData: true,
   });
   console.log(error);
   return (

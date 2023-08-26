@@ -17,7 +17,7 @@ import TrailerVideo from "./trailerVideo";
 import { useQuery } from "@tanstack/react-query";
 import { fetchExactMovie } from "../../apis/getApi";
 export default function Head({ movieId, changeMovieId }) {
-  const [readMore, setReadMore] = useState(false);
+  const [readMoreOverview, setReadMoreOverview] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
   const [watchTrailer, setWatchTrailer] = useState(false);
   const elementRef = useRef(null);
@@ -80,7 +80,7 @@ export default function Head({ movieId, changeMovieId }) {
               initial={{ opacity: 0.5 }}
               animate={{ opacity: 1 }}
               src={imgSrc}
-              className=" w-80 h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-900"
+              className=" w-80 h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white "
             />
           )}
 
@@ -119,9 +119,9 @@ export default function Head({ movieId, changeMovieId }) {
               {data && (
                 <p
                   ref={elementRef}
-                  //implement readmore function only when the text is heigher that 48px
+                  //implement readmoreOverview function only when the text is heigher that 48px
                   style={
-                    overviewWidth > 56 && !readMore
+                    overviewWidth > 56 && !readMoreOverview
                       ? { maxHeight: "48px", overflow: "hidden" }
                       : null
                   }
@@ -130,11 +130,11 @@ export default function Head({ movieId, changeMovieId }) {
                 </p>
               )}
               {/* read MOre button */}
-              {/* show the readmore button only when api is fetched and text width is > 48px */}
+              {/* show the readmoreOverview button only when api is fetched and text width is > 48px */}
               {data && overviewWidth > 56 && (
                 <button
                   className=" flex justify-start items-center text-white "
-                  onClick={() => setReadMore(!readMore)}
+                  onClick={() => setReadMoreOverview(!readMoreOverview)}
                   style={{ textShadow: "2px 2px 8px black" }}
                 >
                   <FontAwesomeIcon
@@ -143,7 +143,7 @@ export default function Head({ movieId, changeMovieId }) {
                     style={{ textShadow: "2px 2px 8px black" }}
                   />
                   <span className=" text-xl flex items-center ">
-                    {readMore ? "show less" : "read more"}
+                    {readMoreOverview ? "show less" : "read more"}
                   </span>
                 </button>
               )}

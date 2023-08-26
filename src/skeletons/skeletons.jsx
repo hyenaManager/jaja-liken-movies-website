@@ -19,11 +19,11 @@ export default function SkeletonBar({ percent, color = "bg-slate-400" }) {
     </div>
   );
 }
-export function SkeletonColumn({ percent }) {
+export function SkeletonColumn({ percent, wPercent = "null" }) {
   return (
     <div
       className="relative rounded-lg bg-slate-400 overflow-hidden h-7 m-1"
-      style={{ height: percent }}
+      style={{ height: percent, width: wPercent }}
     >
       <Flashing />
     </div>

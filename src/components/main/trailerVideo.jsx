@@ -68,7 +68,7 @@ function TrailerVideo({ toggleVideo, movieSource }) {
       onClick={(e) => {
         toggleVideo();
       }}
-      className="  absolute w-full z-20 backdrop-blur-sm top-0 left-0 font-kanit text-white uppercase h-full cursor-auto videoHolder flex justify-center items-center"
+      className="  absolute w-full z-50 backdrop-blur-sm top-0 left-0 font-kanit text-white uppercase h-full cursor-auto videoHolder flex justify-center items-center"
     >
       {/* video container */}
       <div className="video-container flex flex-col ph-size:w-fit ph-size:h-1/2 sm:w-3/4 sm:h-almost z-30  relative ">
