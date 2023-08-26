@@ -5,6 +5,7 @@ import { useEffect, useState, useTransition } from "react";
 import { fetchMovieByName } from "../../apis/getApi";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import SkeletonBar, { SkeletonColumn } from "../../skeletons/skeletons";
 
 export default function Search() {
   const [searchName, setSearchName] = useState("avenger");
@@ -15,7 +16,7 @@ export default function Search() {
     queryKey: ["searchMovie", searchName],
     queryFn: () => fetchMovieByName(searchName),
   });
-
+  console.log(error);
   return (
     <div className=" bg-slate-800 pt-14 mt-3">
       <div className="flex justify-center items-center m-0 h-full">
@@ -24,13 +25,13 @@ export default function Search() {
           value={inputText}
           autoComplete="on"
           onChange={(e) => setInputText(e.target.value)}
-          className=" rounded-sm p-1 focus:outline-none focus:shadow-outline "
+          className=" rounded-sm p-1 focus:outline-none focus:shadow-outline mr-2 "
           placeholder="search movies.."
         />
         <FontAwesomeIcon
           onClick={() => setSearchName(inputText)}
           icon={faSearch}
-          className=" cursor-pointer text-slate-300"
+          className=" cursor-pointer text-slate-300 text-xl hover:text-green-400"
         />
       </div>
       <div className=" flex justify-center items-center font-kanit text-2xl text-yellow-50">
@@ -42,14 +43,15 @@ export default function Search() {
           Sorry we could'nt find any movie match with {searchName} ☹️ 
         </div>
       )}
-      <div className=" grid ph-size:grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-8 p-3 ">
-        {status === "loading" ? (
-          <div className=" text-4xl">Loading........</div>
-        ) : (
-          data?.results.map((movie) => (
-            <MoviePoster movie={movie} key={movie.id} />
-          ))
-        )}
+      <div className=" grid ph-size:grid-cols-2 sm:grid-cols-4 lg:grid-cols-6  gap-8 p-10 ">
+        {error && <div> there is some error {error.message}</div>}
+        {status === "loading"
+          ? [1, 2, 3, 4, 5, 6].map((number) => (
+              <SkeletonColumn key={number} percent={"300px"} />
+            ))
+          : data?.results.map((movie) => (
+              <MoviePoster movie={movie} key={movie.id} />
+            ))}
       </div>
     </div>
   );
@@ -71,11 +73,7 @@ function MoviePoster({ movie }) {
   }, [movie.poster_path]);
 
   if (!imgSrc) {
-    return (
-      <div
-        className={` min-h-imgHeight bg-opacity-50 rounded-md bg-red-900 `}
-      ></div>
-    );
+    return <div className={` bg-opacity-50 rounded-md bg-red-900 `}></div>;
   }
 
   return (
@@ -92,7 +90,6 @@ function MoviePoster({ movie }) {
         loading="lazy"
         initial={{ opacity: 0.5 }}
         animate={{ opacity: 1 }}
-        exit={{ x: "-100vw" }}
         src={imgSrc}
         className="rounded-md"
       />

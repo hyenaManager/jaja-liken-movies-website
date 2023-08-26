@@ -98,9 +98,29 @@ function TrailerVideo({ toggleVideo, movieSource }) {
               title="YouTube video player"
               allowFullScreen
             ></iframe>
-            <span className=" flex justify-center items-center bg-black p-1">
-              {trailerVideos?.[trailerVideoIndex]?.name}
-            </span>
+            <div className=" bg-black flex justify-between items-center">
+              <span className=" flex justify-center items-center p-1">
+                {trailerOrTeaser === "trailer" ? (
+                  <div className=" text-yellow-300 text-lg">Trailer</div>
+                ) : (
+                  <div className=" text-yellow-300 text-lg">Teaser</div>
+                )}
+                {" : "}
+                {trailerVideos?.[trailerVideoIndex]?.name}
+              </span>
+              <button
+                onClick={(e) => {
+                  setTrailerOrTeaser(
+                    trailerOrTeaser === "trailer" ? "teaser" : "trailer"
+                  );
+                  e.stopPropagation();
+                }}
+                className=" rounded-sm bg-green-400 hover:bg-green-700 m-1 p-1"
+              >
+                Watch {trailerOrTeaser === "trailer" ? "Teaser" : "Trailer"}{" "}
+                Video
+              </button>
+            </div>
             <div className=" flex justify-between">
               <FontAwesomeIcon
                 icon={faArrowLeft}
@@ -115,17 +135,7 @@ function TrailerVideo({ toggleVideo, movieSource }) {
                 {VideoNumberStatus}
               </span>
               {/* change trailer mode */}
-              <button
-                onClick={(e) => {
-                  setTrailerOrTeaser(
-                    trailerOrTeaser === "trailer" ? "teaser" : "trailer"
-                  );
-                  e.stopPropagation();
-                }}
-                className=" bg-black"
-              >
-                {trailerOrTeaser === "trailer" ? "Teaser" : "Trailer"} Video
-              </button>
+
               <FontAwesomeIcon
                 icon={faArrowRight}
                 className=" text-xl p-2 bg-red-500 "

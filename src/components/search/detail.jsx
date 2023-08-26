@@ -70,7 +70,9 @@ export default function Detail() {
           {/* movie img */}
 
           {!data && !imgSrc ? (
-            <ImgSkeleton />
+            <div className=" w-1/4 h-1/4">
+              <ImgSkeleton />
+            </div>
           ) : (
             <motion.img
               initial={{ opacity: 0.5 }}

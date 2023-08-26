@@ -43,7 +43,7 @@ function Main() {
             changeMovieId={changeSrcId}
           />
         </div>
-        <main className=" showedMovies bg-slate-800 ph-size:p-1 ph-size:mr-5 ph-size:ml-5 sm:p-6 sm:mr-12 sm:ml-12 ">
+        <main className=" showedMovies bg-slate-800 ph-size:p-1 ph-size:mr-5 ph-size:ml-5 sm:p-6 sm:mr-5 sm:ml-5 ">
           <ApiMovies changeSrc={changeSrcId} />
         </main>
       </div>
