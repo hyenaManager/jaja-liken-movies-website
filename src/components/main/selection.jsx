@@ -41,18 +41,6 @@ export default function ApiMovies({ movie, changeSrc }) {
           name={catagoryRef.current}
           handleCatagory={handleCatagory}
         />
-
-        <div className="flex justify-start items-center">
-          <input
-            type="text"
-            className=" rounded-sm p-1 focus:outline-none focus:shadow-outline "
-            placeholder="search movies.."
-          />
-          <FontAwesomeIcon
-            icon={faSearch}
-            className=" cursor-auto text-slate-300"
-          />
-        </div>
       </div>
       <div className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6  font-head ph-size:p-1 sm:p-3">
         {moviesList}
@@ -74,7 +62,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
           e.stopPropagation();
         }}
         type="button"
-        className="inline-flex justify-center items-center w-full rounded-md text-lg font-head text-white"
+        className=" p-2 inline-flex justify-center items-center w-full rounded-md text-lg font-head text-white hover:bg-black bg-slate-950"
         id="options-menu"
         aria-expanded="true"
         aria-haspopup="true"
@@ -89,7 +77,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
 
       <div
         className={
-          " origin-top-right absolute right-0 mt-2 h-32 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 " +
+          " origin-top-right absolute right-0 mt-2 h-40 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 " +
           (hidden ? " hidden" : null)
         }
         role="menu"

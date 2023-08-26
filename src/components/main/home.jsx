@@ -4,8 +4,6 @@ import ApiMovies from "./selection";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
-console.log("this is local storage" + localStorage);
-
 function Main() {
   const [movieId, setMovieId] = useState(null);
   const headRef = useRef(null);

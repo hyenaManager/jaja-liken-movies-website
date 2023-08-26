@@ -17,7 +17,6 @@ export default function Search() {
     queryFn: () => fetchMovieByName(searchName),
     keepPreviousData: true,
   });
-  console.log(error);
   return (
     <div className=" bg-slate-800 pt-14 mt-3">
       <div className="flex justify-center items-center m-0 h-full">

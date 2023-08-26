@@ -33,7 +33,6 @@ export default function Detail() {
     queryFn: () => fetchExactMovie(movieId),
     keepPreviousData: true,
   });
-  console.log(movieId);
 
   const link = "https://image.tmdb.org/t/p/original/";
   useEffect(() => {

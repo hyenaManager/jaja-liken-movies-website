@@ -24,7 +24,7 @@ function TrailerVideo({ toggleVideo, movieSource }) {
   const trailerVideos = data?.results?.filter((movie) => {
     return movie.type.toLowerCase() === trailerOrTeaser;
   }); //fetching all the trailer video
-  console.log(trailerVideos);
+
   //for implementation of watching more trailer videos by arrow buttons
   function decreaseVideoIndex() {
     if (trailerVideoIndex === 0) {
