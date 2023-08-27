@@ -22,7 +22,8 @@ export default function Head({ movieId, changeMovieId }) {
   const [watchTrailer, setWatchTrailer] = useState(false);
   const elementRef = useRef(null);
   const [imageIsLoaded, setImageIsLoaded] = useState(false);
-  const [backDropImgSrc, setBackDropImgSrc] = useState(null);
+  const [backDropImageLoaded, setBackDropImageLoaded] = useState(false);
+  const link = "https://image.tmdb.org/t/p/original/";
 
   const { status, data } = useQuery({
     queryKey: ["headMovie", movieId],
@@ -37,26 +38,14 @@ export default function Head({ movieId, changeMovieId }) {
       setOverviewWidth(height);
     }
   }, [data]);
-
-  const link = "https://image.tmdb.org/t/p/original/";
-  // useEffect(() => {
-  //   // Load the poster image source when it done render img
-  //   const source = link + data?.poster_path;
-  //   const img = new Image();
-  //   img.src = source;
-  //   img.onload = () => {
-  //     setImgSrc(source);
-  //   };
-  // }, [data?.poster_path]);
-  // useEffect(() => {
-  //   //load the backdrop image source when it done reder img
-  //   const source = link + data?.backdrop_path;
-  //   const img = new Image();
-  //   img.src = source;
-  //   img.onload = () => {
-  //     setBackDropImgSrc(source);
-  //   };
-  // }, [data?.backdrop_path]);
+  useEffect(() => {
+    const source = link + data?.backdrop_path;
+    const img = new Image();
+    img.src = source;
+    img.onload = () => {
+      setBackDropImageLoaded(true);
+    };
+  });
 
   return (
     <>
@@ -65,7 +54,9 @@ export default function Head({ movieId, changeMovieId }) {
           "headParentDiv relative  mt-10 pt-4 pb-5" + (!data && " bg-slate-300")
         }
         style={{
-          backgroundImage: `url(${link + data?.backdrop_path})`,
+          backgroundImage: backDropImageLoaded
+            ? `url(${link + data?.backdrop_path})`
+            : "linear-gradient(90deg, #ccc, #999, #ccc)",
         }}
       >
         {/* if error  */}
@@ -83,18 +74,14 @@ export default function Head({ movieId, changeMovieId }) {
         >
           {/* movie img */}
 
-          {!data ? (
-            <ImgSkeleton />
-          ) : (
-            <motion.img
-              initial={{ opacity: 0 }}
-              animate={{ opacity: imageIsLoaded ? 1 : 0 }}
-              transition={{ duration: 0.8 }}
-              src={link + data?.poster_path}
-              onLoad={() => setImageIsLoaded(true)}
-              className=" h-96 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-500 "
-            />
-          )}
+          <motion.img
+            initial={{ opacity: 0 }}
+            animate={{ opacity: imageIsLoaded ? 1 : 0 }}
+            src={link + data?.poster_path}
+            onLoad={() => setImageIsLoaded(true)}
+            className=" w-64 h-96 mr-4 relative object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-500 "
+          />
+          {!data && !imageIsLoaded && <ImgSkeleton />}
 
           {/* movie details */}
           <div
