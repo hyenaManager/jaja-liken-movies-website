@@ -106,26 +106,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
 
 function Movie({ movie, changeSrc }) {
   const [isHover, setIsHover] = useState(false);
-  const [imgSrc, setImgSrc] = useState(null);
-
-  useEffect(() => {
-    // Load the image source when the component mounts
-    const source = "https://image.tmdb.org/t/p/original" + movie.poster_path;
-    const img = new Image();
-    img.src = source;
-    img.onload = () => {
-      setImgSrc(source);
-    };
-  }, [movie.poster_path]);
-
-  if (!imgSrc) {
-    return (
-      <div
-        className={` min-h-imgHeight bg-opacity-50 rounded-md bg-red-900 `}
-      ></div>
-    );
-  }
-
+  const [imageIsLoaded, setImageIsLoaded] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0.5 }}
@@ -138,11 +119,16 @@ function Movie({ movie, changeSrc }) {
 
       <motion.img
         loading="lazy"
-        initial={{ opacity: 0.5 }}
-        animate={{ opacity: 1 }}
-        src={imgSrc}
-        className="rounded-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: imageIsLoaded ? 1 : 0 }}
+        src={"https://image.tmdb.org/t/p/original" + movie.poster_path}
+        onLoad={() => setImageIsLoaded(true)}
+        className="rounded-md relative z-10"
       />
+      {/* image placeHolder */}
+      <div
+        className={` w-full h-full absolute bg-opacity-50 rounded-md bg-red-900 `}
+      ></div>
 
       {/* Check movie button */}
       {isHover && (
@@ -150,7 +136,7 @@ function Movie({ movie, changeSrc }) {
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 1.3 }}
           onClick={() => changeSrc(movie)}
-          className="p-1 pr-2 pl-2 bg-green-400 text-white rounded-3xl text-md absolute top-3 right-3 drop-shadow-xl"
+          className=" z-20 p-1 pr-2 pl-2 bg-green-400 text-white rounded-3xl text-md absolute top-3 right-3 drop-shadow-xl"
         >
           <span className="text-white">Check</span>
         </motion.button>
