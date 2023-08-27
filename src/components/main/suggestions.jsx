@@ -81,42 +81,30 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
 }
 
 function Movie({ movie, changeMovieId }) {
-  const [imgSrc, setImgSrc] = useState(null);
+  const [imageIsLoaded, setImageIsLoaded] = useState(false);
   const link = "https://image.tmdb.org/t/p/original";
 
-  useEffect(() => {
-    // Load the image source when the component mounts
-    const source = link + movie.poster_path;
-    const img = new Image();
-    img.src = source;
-    img.onload = () => {
-      setImgSrc(source);
-    };
-  }, []);
   return (
     <motion.div
       key={movie.original_title}
       className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative "
     >
-      {!imgSrc ? (
-        <div
-          className={` min-h-full min-w-full bg-opacity-50 rounded-md bg-red-900 `}
-        ></div>
-      ) : (
-        <motion.img
-          initial={{ opacity: 0.5 }}
-          animate={{ opacity: 1 }}
-          src={imgSrc}
-          className=" w-full h-full cursor-grab pointer-events-none "
-        />
-      )}
+      <motion.img
+        initial={{ opacity: 0 }}
+        animate={{ opacity: imageIsLoaded ? 1 : 0 }}
+        src={link + movie.poster_path}
+        onLoad={() => setImageIsLoaded(true)}
+        className=" w-64 cursor-grab pointer-events-none relative z-10 "
+      />
+      <div className=" absolute w-64 bg-opacity-50 rounded-md bg-red-900 "></div>
+
       <motion.button
         whileHover={{ scale: 1.3 }}
         onClick={() => {
           changeMovieId(movie);
         }}
         className={
-          "p-1 pr-2 pl-2 bg-fuchsia-600 text-white rounded-full drop-shadow-xl text-md absolute top-2 right-2 z-20"
+          " p-1 pr-2 pl-2 bg-fuchsia-600 text-white rounded-full drop-shadow-xl text-md absolute top-2 right-2 z-20"
         }
       >
         <span className=" text-white">check</span>
