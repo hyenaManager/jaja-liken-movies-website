@@ -20,7 +20,7 @@ export default function ApiMovies({ movie, changeSrc }) {
     setRequestedCatagory(type);
     catagoryRef.current = catagory;
   }
-  const { status, data } = useQuery({
+  const { status, data, error } = useQuery({
     queryKey: ["videoPosters", requestedCatagory],
     queryFn: () => fetchMovies(requestedCatagory),
     keepPreviousData: true,
@@ -36,11 +36,16 @@ export default function ApiMovies({ movie, changeSrc }) {
   ));
   return (
     <>
-      <div className=" selectionNav flex justify-between p-2 ph-size:max-w-screen-generalSize sm:max-w-none">
+      <div className=" selectionNav flex justify-start p-2 ph-size:max-w-screen-generalSize sm:max-w-none">
         <SelectionHeadDropdown
           name={catagoryRef.current}
           handleCatagory={handleCatagory}
         />
+        {status === "error" && (
+          <div className=" text-xl text-red font-kanit ">
+            There's beeen error... {error.message}
+          </div>
+        )}
       </div>
       <div className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6  font-head ph-size:p-1 sm:p-3">
         {moviesList}

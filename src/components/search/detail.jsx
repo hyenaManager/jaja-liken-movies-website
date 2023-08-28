@@ -7,7 +7,7 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImgSkeleton } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
 import SkeletonBar from "/src/skeletons/skeletons";
@@ -22,37 +22,46 @@ import Credits from "./movieCredit";
 
 export default function Detail() {
   const { movieId } = useParams();
-  const [readMore, setReadMore] = useState(false);
+  const [readMoreOverview, setReadMoreOverview] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
   const [watchTrailer, setWatchTrailer] = useState(false);
-  const [imgSrc, setImgSrc] = useState(null);
+  const elementRef = useRef(null);
+  const [imageIsLoaded, setImageIsLoaded] = useState(false);
+  const [backDropImageLoaded, setBackDropImageLoaded] = useState(false);
+  const link = "https://image.tmdb.org/t/p/original/";
 
-  //fetching exactly one movie match with movieId
   const { status, data } = useQuery({
     queryKey: ["headMovie", movieId],
     queryFn: () => fetchExactMovie(movieId),
     keepPreviousData: true,
   });
 
-  const link = "https://image.tmdb.org/t/p/original/";
   useEffect(() => {
-    // Load the image source when the component mounts
-    const source = link + data?.poster_path;
+    if (data && elementRef?.current?.clientHeight !== 48) {
+      const height = elementRef.current.clientHeight;
+
+      setOverviewWidth(height);
+    }
+  }, [data]);
+  useEffect(() => {
+    const source = link + data?.backdrop_path;
     const img = new Image();
     img.src = source;
     img.onload = () => {
-      setImgSrc(source);
+      setBackDropImageLoaded(true);
     };
-  }, [data?.poster_path]);
+  });
 
   return (
     <>
       <div
         className={
-          "headParentDiv relative  mt-14 h-fullvh " + (!data && " bg-slate-300")
+          "headParentDiv relative  mt-10 pt-4 pb-5" + (!data && " bg-slate-300")
         }
         style={{
-          backgroundImage: `url(${link + data?.backdrop_path})`,
+          backgroundImage: backDropImageLoaded
+            ? `url(${link + data?.backdrop_path})`
+            : "linear-gradient(90deg, #ccc, #999, #ccc)",
         }}
       >
         {/* if error  */}
@@ -70,21 +79,14 @@ export default function Detail() {
         >
           {/* movie img */}
 
-          {!data ? (
-            <ImgSkeleton />
-          ) : (
-            <motion.img
-              initial={{ opacity: 0.5 }}
-              animate={{ opacity: 1 }}
-              src={imgSrc}
-              className=" h-px4 mr-4 object-cover rounded-lg drop-shadow-md border-2 border-white "
-            />
-          )}
-          {/* <motion.div
-            initial={{ opacity: 0.5 }}
-            animate={{ opacity: 1 }}
-            className=" w-px5 h-103 mr-4  rounded-lg drop-shadow-md border-2 border-white "
-          ></motion.div> */}
+          <motion.img
+            initial={{ opacity: 0 }}
+            animate={{ opacity: imageIsLoaded ? 1 : 0 }}
+            src={link + data?.poster_path}
+            onLoad={() => setImageIsLoaded(true)}
+            className=" w-64 h-96 mr-4 relative object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-500 "
+          />
+          {!data && !imageIsLoaded && <ImgSkeleton />}
 
           {/* movie details */}
           <div
@@ -120,9 +122,10 @@ export default function Detail() {
             <div className=" mb-3 text-xl drop-shadow-m6 text-slate-100 font-pureStyle">
               {data && (
                 <p
-                  //implement readmore function only when the text is heigher that 48px
+                  ref={elementRef}
+                  //implement readmoreOverview function only when the text is heigher that 48px
                   style={
-                    overviewWidth > 56 && !readMore
+                    overviewWidth > 56 && !readMoreOverview
                       ? { maxHeight: "48px", overflow: "hidden" }
                       : null
                   }
@@ -131,11 +134,11 @@ export default function Detail() {
                 </p>
               )}
               {/* read MOre button */}
-              {/* show the readmore button only when api is fetched and text width is > 48px */}
+              {/* show the readmoreOverview button only when api is fetched and text width is > 48px */}
               {data && overviewWidth > 56 && (
                 <button
                   className=" flex justify-start items-center text-white "
-                  onClick={() => setReadMore(!readMore)}
+                  onClick={() => setReadMoreOverview(!readMoreOverview)}
                   style={{ textShadow: "2px 2px 8px black" }}
                 >
                   <FontAwesomeIcon
@@ -144,7 +147,7 @@ export default function Detail() {
                     style={{ textShadow: "2px 2px 8px black" }}
                   />
                   <span className=" text-xl flex items-center ">
-                    {readMore ? "show less" : "read more"}
+                    {readMoreOverview ? "show less" : "read more"}
                   </span>
                 </button>
               )}
