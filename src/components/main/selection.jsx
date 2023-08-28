@@ -1,9 +1,4 @@
-import {
-  faChevronDown,
-  faChevronUp,
-  faPlay,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 
@@ -42,8 +37,8 @@ export default function ApiMovies({ movie, changeSrc }) {
           handleCatagory={handleCatagory}
         />
         {status === "error" && (
-          <div className=" text-xl text-red font-kanit ">
-            There's beeen error... {error.message}
+          <div className=" text-xl text-red-400 font-kanit ">
+            There's beeen error...
           </div>
         )}
       </div>

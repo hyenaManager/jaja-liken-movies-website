@@ -79,43 +79,41 @@ export default function Credits({ movieId }) {
 }
 
 function Profile({ profile }) {
-  const [imgSrc, setImgSrc] = useState(null);
+  const [imageIsLoaded, setImageIsLoaded] = useState(false);
+  const [imageNotAvailable, setImageNotAvailable] = useState(false);
   const link = "https://image.tmdb.org/t/p/original";
+  console.log(profile);
 
-  useEffect(() => {
-    // Load the image source when the component mounts
-    const source = link + profile.profile_path;
-    const img = new Image();
-    img.src = source;
-    img.onload = () => {
-      setImgSrc(source);
-    };
-  }, []);
   return (
     <motion.div className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative ">
-      {!imgSrc ? (
-        <div
-          className={` min-h-full min-w-full bg-opacity-50 rounded-md bg-red-900 `}
-        ></div>
-      ) : (
-        <>
-          <motion.img
-            initial={{ opacity: 0.5 }}
-            animate={{ opacity: 1 }}
-            whileDrag={{ cursor: "grab" }}
-            src={imgSrc}
-            className=" w-full h-full cursor-grab pointer-events-none relative"
-          />
-          <div className=" flex flex-col justify-center items-center absolute bottom-0 left-0 right-0 bg-slate-800">
-            <div className=" text-yellow-200 font-kanit items-center">
-              {profile.name}
-            </div>
-            <div className=" text-white font-head flex justify-center items-center">
-              as {profile.character}
-            </div>
-          </div>
-        </>
-      )}
+      <motion.img
+        initial={{ opacity: 0 }}
+        animate={{ opacity: imageIsLoaded ? 1 : 0 }}
+        whileDrag={{ cursor: "grab" }}
+        src={
+          profile.profile_path
+            ? link + profile.profile_path
+            : "/public/defaultProfile.jpeg"
+        }
+        onLoad={() => setImageIsLoaded(true)}
+        onError={() => setImageNotAvailable(true)}
+        className=" w-full h-full cursor-grab pointer-events-none relative"
+      />
+      {/* <div className=" text-lg absolute w-full h-full bg-opacity-50 rounded-md bg-red-900 flex justify-center items-center"></div>
+      {imageNotAvailable && (
+        <div className=" text-lg absolute w-full h-full bg-opacity-50 rounded-md bg-red-900 flex justify-center items-center">
+          <div>Image Not Available!</div>
+        </div>
+      )} */}
+      <div className=" flex flex-col justify-center items-center absolute bottom-0 left-0 right-0 bg-slate-800">
+        <div className=" text-yellow-200 font-kanit items-center">
+          {profile.name}
+        </div>
+        <div className=" text-white font-head flex justify-center items-center">
+          as {profile.character}
+        </div>
+      </div>
+
       <motion.button
         whileHover={{ scale: 1.3 }}
         // onClick={() => {

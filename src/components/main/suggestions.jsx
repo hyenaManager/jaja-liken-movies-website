@@ -82,6 +82,7 @@ export default function SuggestMovies({ suggestGenre, changeMovieId }) {
 
 function Movie({ movie, changeMovieId }) {
   const [imageIsLoaded, setImageIsLoaded] = useState(false);
+  const [imageNotAvailable, setImageNotAvailable] = useState(false);
   const link = "https://image.tmdb.org/t/p/original";
 
   return (
@@ -94,9 +95,15 @@ function Movie({ movie, changeMovieId }) {
         animate={{ opacity: imageIsLoaded ? 1 : 0 }}
         src={link + movie.poster_path}
         onLoad={() => setImageIsLoaded(true)}
+        onError={() => setImageNotAvailable(true)}
         className=" w-64 cursor-grab pointer-events-none relative z-10 "
       />
       <div className=" absolute w-64 bg-opacity-50 rounded-md bg-red-900 "></div>
+      {imageNotAvailable && (
+        <div className=" text-lg absolute w-64 bg-opacity-50 rounded-md bg-red-900 flex justify-center items-center">
+          <div>Image Not Available!</div>
+        </div>
+      )}
 
       <motion.button
         whileHover={{ scale: 1.3 }}
