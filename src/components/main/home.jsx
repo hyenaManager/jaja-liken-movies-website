@@ -1,15 +1,14 @@
 import { useRef, useState, useTransition } from "react";
-import Head from "./selectedMovie";
-import ApiMovies from "./selection";
+import Head from "./checkedMovie";
+import ApiMovies from "./catagoryMovie";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
 function Main() {
   const [movieId, setMovieId] = useState(null);
+  const [movieCatagory, setMovieCatagory] = useState("popular");
   const headRef = useRef(null);
-  const [isPending, startTransition] = useTransition();
-
-  function changeSrcId(src) {
+  function changeMovieId(src) {
     jumpToTop();
 
     setMovieId(src.id);
@@ -25,8 +24,8 @@ function Main() {
 
   //for the first time movieId
   const { status, data } = useQuery({
-    queryKey: ["videoPosters", "popular"],
-    queryFn: fetchMovies("popular"),
+    queryKey: ["videoPosters", movieCatagory],
+    queryFn: fetchMovies(movieCatagory),
   });
 
   return (
@@ -35,11 +34,15 @@ function Main() {
         <div key={movieId} className=" pt-3  bg-red-700" ref={headRef}>
           <Head
             movieId={movieId || data?.results?.[0]?.id}
-            changeMovieId={changeSrcId}
+            changeMovieId={changeMovieId}
           />
         </div>
         <main className=" showedMovies bg-slate-800 ph-size:p-1 ph-size:mr-5 ph-size:ml-5 sm:p-6 sm:mr-5 sm:ml-5 ">
-          <ApiMovies changeSrc={changeSrcId} />
+          <ApiMovies
+            changeMovieId={changeMovieId}
+            changeCatagory={setMovieCatagory}
+            movieCatagory={movieCatagory}
+          />
         </main>
       </div>
     </>

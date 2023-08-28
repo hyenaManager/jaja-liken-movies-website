@@ -82,7 +82,6 @@ function Profile({ profile }) {
   const [imageIsLoaded, setImageIsLoaded] = useState(false);
   const [imageNotAvailable, setImageNotAvailable] = useState(false);
   const link = "https://image.tmdb.org/t/p/original";
-  console.log(profile);
 
   return (
     <motion.div className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative ">

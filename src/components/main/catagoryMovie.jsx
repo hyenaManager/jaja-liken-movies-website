@@ -7,22 +7,25 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
-export default function ApiMovies({ movie, changeSrc }) {
-  const [requestedCatagory, setRequestedCatagory] = useState("popular");
-  const catagoryRef = useRef("Popular");
+export default function ApiMovies({
+  changeCatagory,
+  changeMovieId,
+  movieCatagory,
+}) {
+  const [catagoryName, setCatagoryName] = useState("Popular");
 
   function handleCatagory(type, catagory) {
-    setRequestedCatagory(type);
-    catagoryRef.current = catagory;
+    changeCatagory(type);
+    setCatagoryName(catagory);
   }
   const { status, data, error } = useQuery({
-    queryKey: ["videoPosters", requestedCatagory],
-    queryFn: () => fetchMovies(requestedCatagory),
+    queryKey: ["videoPosters", movieCatagory],
+    queryFn: () => fetchMovies(movieCatagory),
     keepPreviousData: true,
   });
 
   const moviesList = data?.results?.map((movie) => (
-    <Movie movie={movie} key={movie.id} changeSrc={changeSrc} />
+    <Movie movie={movie} key={movie.id} changeMovieId={changeMovieId} />
   ));
   const skeletonImgs = [1, 2, 3, 4, 5, 6].map((num) => (
     <div key={num} className=" ph-size:max-w-screen-generalSize sm:max-w-none">
@@ -33,7 +36,7 @@ export default function ApiMovies({ movie, changeSrc }) {
     <>
       <div className=" selectionNav flex justify-start p-2 ph-size:max-w-screen-generalSize sm:max-w-none">
         <SelectionHeadDropdown
-          name={catagoryRef.current}
+          catagoryName={catagoryName}
           handleCatagory={handleCatagory}
         />
         {status === "error" && (
@@ -50,12 +53,12 @@ export default function ApiMovies({ movie, changeSrc }) {
   );
 }
 
-function SelectionHeadDropdown({ name, handleCatagory }) {
+function SelectionHeadDropdown({ catagoryName, handleCatagory }) {
   const [hidden, setHidden] = useState(true);
   const Type = ["Now Playing", "Popular", "Top Rated", "Upcoming"];
   const ApiName = ["now_playing", "popular", "top_rated", "upcoming"];
   return (
-    <div className="relative inline-block text-left z-20" key={name}>
+    <div className="relative inline-block text-left z-20" key={catagoryName}>
       <button
         onClick={(e) => {
           setHidden(!hidden);
@@ -67,7 +70,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
         aria-expanded="true"
         aria-haspopup="true"
       >
-        {name}
+        {catagoryName}
         {hidden ? (
           <FontAwesomeIcon icon={faChevronDown} className=" ml-1" />
         ) : (
@@ -104,7 +107,7 @@ function SelectionHeadDropdown({ name, handleCatagory }) {
   );
 }
 
-function Movie({ movie, changeSrc }) {
+function Movie({ movie, changeMovieId }) {
   const [isHover, setIsHover] = useState(false);
   const [imageIsLoaded, setImageIsLoaded] = useState(false);
   return (
@@ -135,7 +138,7 @@ function Movie({ movie, changeSrc }) {
         <motion.button
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 1.3 }}
-          onClick={() => changeSrc(movie)}
+          onClick={() => changeMovieId(movie)}
           className=" z-20 p-1 pr-2 pl-2 bg-green-400 text-white rounded-3xl text-md absolute top-3 right-3 drop-shadow-xl"
         >
           <span className="text-white">Check</span>
