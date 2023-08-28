@@ -81,7 +81,7 @@ export default function Head({ movieId, changeMovieId }) {
             onLoad={() => setImageIsLoaded(true)}
             className=" w-64 h-96 mr-4 relative object-cover rounded-lg drop-shadow-md border-2 border-white bg-red-500 "
           />
-          {!data && !imageIsLoaded && <ImgSkeleton />}
+          {(!data || !imageIsLoaded) && <ImgSkeleton />}
 
           {/* movie details */}
           <div
