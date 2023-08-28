@@ -76,46 +76,60 @@ export function SmallNavbar({ toggleNav }) {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
           exit={{ opacity: 0, x: "-100vw" }}
-          className="top-0  left-0 w-1/3 flex flex-col items-center h-full z-50 bg-slate-800 cursor-pointer"
+          className="top-0  left-0 w-2/5 flex flex-col items-center h-full z-50 bg-slate-800 cursor-pointer"
         >
           <li
             onClick={toggleNav}
-            className={"  hover:text-red-300 p-2  text-sm cursor-pointer"}
+            className={
+              "  hover:text-red-300 p-3 mt-2  text-lg  cursor-pointer "
+            }
           >
             Back
           </li>
           <li
             onClick={toggleNav}
-            className={"  hover:text-red-300 p-2  text-sm cursor-pointer"}
+            className={
+              "  hover:text-red-300 p-3 mt-2  text-lg  cursor-pointer "
+            }
           >
             <Link to={"/"}>main</Link>
           </li>
           <li
             onClick={notAvailableLink}
-            className={"  hover:text-red-300 p-2  text-sm cursor-pointer"}
+            className={
+              "  hover:text-red-300 p-3 mt-2  text-lg  cursor-pointer "
+            }
           >
             favourite
           </li>
           <li
             onClick={notAvailableLink}
-            className={"  hover:text-red-300 p-2  text-sm cursor-pointer"}
+            className={
+              "  hover:text-red-300 p-3 mt-2  text-lg  cursor-pointer "
+            }
           >
             Liken Social
           </li>
           <li
             onClick={notAvailableLink}
-            className={"  hover:text-red-300 p-2  text-sm cursor-pointer"}
+            className={
+              "  hover:text-red-300 p-3 mt-2  text-lg  cursor-pointer "
+            }
           >
             contact
           </li>
-          <li className={"  hover:text-red-300 p-2  text-sm cursor-pointer"}>
+          <li
+            className={
+              "  hover:text-red-300 p-3 mt-2  text-lg  cursor-pointer "
+            }
+          >
             <Link to={"search"} onClick={toggleNav}>
               search
             </Link>
           </li>
           <li
             onClick={notAvailableLink}
-            className=" hover:text-red-300 p-2  text-sm"
+            className=" hover:text-red-300 p-3 mt-2  text-lg "
           >
             login
           </li>
