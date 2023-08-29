@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
-export default function ApiMovies({
+export default function CatagoryMovies({
   changeCatagory,
   changeMovieId,
   movieCatagory,

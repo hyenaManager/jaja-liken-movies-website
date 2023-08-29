@@ -1,6 +1,6 @@
 import { useRef, useState, useTransition } from "react";
 import Head from "./checkedMovie";
-import ApiMovies from "./catagoryMovie";
+import CatagoryMovies from "./catagoryMovie";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
@@ -38,7 +38,7 @@ function Main() {
           />
         </div>
         <main className=" showedMovies bg-slate-800 ph-size:p-1 ph-size:mr-5 ph-size:ml-5 sm:p-6 sm:mr-5 sm:ml-5 ">
-          <ApiMovies
+          <CatagoryMovies
             changeMovieId={changeMovieId}
             changeCatagory={setMovieCatagory}
             movieCatagory={movieCatagory}

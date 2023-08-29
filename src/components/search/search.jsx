@@ -22,9 +22,9 @@ export default function Search() {
       <div className="flex justify-center items-center m-0 h-full">
         <input
           type="text"
-          value={inputText}
+          value={searchName}
           autoComplete="on"
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={(e) => setSearchName(e.target.value)}
           className=" rounded-sm p-1 focus:outline-none focus:shadow-outline mr-2 "
           placeholder="search movies.."
         />
