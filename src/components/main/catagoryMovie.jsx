@@ -14,8 +14,8 @@ export default function CatagoryMovies({
 }) {
   const [catagoryName, setCatagoryName] = useState("Popular");
   const [bgImageIsLoaded, setBgImageIsLoaded] = useState(false);
-  const bgRealImage = "public/bgLarge.jpg";
-  const bgPlaceholderImage = "public/bgMin.jpg";
+  const bgRealImage = "bgLarge.jpg";
+  const bgPlaceholderImage = "bgMin.jpg";
   useEffect(() => {
     const source = bgRealImage;
     const img = new Image();
