@@ -53,7 +53,7 @@ export default function Head({
 
     return !!boolean;
   }
-  console.log("detail wishlist " + movieId, wishlist);
+
   const wishlistButton =
     data &&
     (isAlreadyExistInWL() ? (
