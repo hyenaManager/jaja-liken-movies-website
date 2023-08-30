@@ -2,6 +2,7 @@ import {
   faClock,
   faClosedCaptioning,
   faEllipsis,
+  faMinus,
   faPlay,
   faPlus,
   faStar,
@@ -20,7 +21,11 @@ import TrailerVideo from "../main/trailerVideo";
 import { SkeletonColumn } from "../../skeletons/skeletons";
 import Credits from "./movieCredit";
 
-export default function Detail() {
+export default function Detail({
+  addToWishlist,
+  removeFromWishlist,
+  wishlist,
+}) {
   const { movieId } = useParams();
   const [readMoreOverview, setReadMoreOverview] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
@@ -35,7 +40,31 @@ export default function Detail() {
     queryFn: () => fetchExactMovie(movieId),
     keepPreviousData: true,
   });
+  function isAlreadyExistInWL() {
+    const boolean = wishlist.find(
+      (movie) => parseInt(movie.id) === parseInt(movieId)
+    );
 
+    return !!boolean;
+  }
+
+  const wishlistButton = isAlreadyExistInWL() ? (
+    <button
+      onClick={() => removeFromWishlist(data)}
+      className=" mr-5 p-3 pr-4 pl-4 hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg"
+    >
+      <FontAwesomeIcon icon={faMinus} className="mr-2 text-white text-lg" />
+      <span className=" text-white">wishlist</span>
+    </button>
+  ) : (
+    <button
+      onClick={() => addToWishlist(data)}
+      className=" mr-5 p-3 pr-4 pl-4 hover:bg-green-700 bg-green-500 text-white rounded-3xl text-lg"
+    >
+      <FontAwesomeIcon icon={faPlus} className="mr-2 text-white text-lg" />
+      <span className=" text-white">wishlist</span>
+    </button>
+  );
   useEffect(() => {
     if (data && elementRef?.current?.clientHeight !== 48) {
       const height = elementRef.current.clientHeight;
@@ -199,13 +228,7 @@ export default function Detail() {
                   <span className=" text-white">watch trailer</span>
                 </button>
                 {/* add to wishlist button */}
-                <button
-                  // onClick={() => setWatchTrailer(!watchTrailer)}
-                  className=" mr-5 p-3 pr-4 pl-4 hover:bg-green-700 bg-green-500 text-white rounded-3xl text-lg"
-                >
-                  <FontAwesomeIcon icon={faPlus} className="mr-2 text-white" />
-                  <span className=" text-white">wishlist</span>
-                </button>
+                {wishlistButton}
               </div>
             )}
           </div>

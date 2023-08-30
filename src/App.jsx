@@ -8,13 +8,22 @@ const Main = lazy(() => import("./components/main/home"));
 const Search = lazy(() => import("./components/search/search"));
 const Detail = lazy(() => import("./components/search/detail"));
 const Navbar = lazy(() => import("./components/main/navbar"));
+const WishList = lazy(() => import("./components/wishlist/wishlist"));
 function App() {
   const [smallNav, setSmallNav] = useState(false);
   const [defaultSearchText, setDefaultSearchText] = useState("avenger");
+  const [wishlist, setWishlist] = useState([]);
+  function addToWishlist(movie) {
+    setWishlist((wishlist) => [...wishlist, movie]);
+  }
+  function removeFromWishlist(movie) {
+    setWishlist((wishlist) =>
+      wishlist.filter((wishlistMovie) => wishlistMovie.id !== movie.id)
+    );
+  }
   function toggleNav() {
     setSmallNav(!smallNav);
   }
-  console.log("change to ", defaultSearchText);
   return (
     <>
       <div className="relative ph-size:max-w-screen-generalSize sm:max-w-none bg-slate-800 ">
@@ -30,7 +39,11 @@ function App() {
           path="/"
           element={
             <Suspense fallback={<div>Loading....</div>}>
-              <Main />
+              <Main
+                wishlist={wishlist}
+                addToWishlist={addToWishlist}
+                removeFromWishlist={removeFromWishlist}
+              />
             </Suspense>
           }
         />
@@ -49,7 +62,22 @@ function App() {
           path="/search/:movieId"
           element={
             <Suspense fallback={<div>Loading....</div>}>
-              <Detail />
+              <Detail
+                wishlist={wishlist}
+                addToWishlist={addToWishlist}
+                removeFromWishlist={removeFromWishlist}
+              />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/wishlist"
+          element={
+            <Suspense fallback={<div>Loading....</div>}>
+              <WishList
+                wishlist={wishlist}
+                removeFromWishlist={removeFromWishlist}
+              />
             </Suspense>
           }
         />

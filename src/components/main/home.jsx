@@ -4,7 +4,7 @@ import CatagoryMovies from "./catagoryMovie";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "../../apis/getApi";
 
-function Main() {
+function Main({ wishlist, addToWishlist, removeFromWishlist }) {
   const [movieId, setMovieId] = useState(null);
   const [movieCatagory, setMovieCatagory] = useState("popular");
   const headRef = useRef(null);
@@ -33,6 +33,9 @@ function Main() {
       <div className=" LikenMovieApp relative ph-size:max-w-screen-generalSize sm:max-w-none">
         <div key={movieId} className=" pt-3  bg-red-700" ref={headRef}>
           <Head
+            wishlist={wishlist}
+            addToWishlist={addToWishlist}
+            removeFromWishlist={removeFromWishlist}
             movieId={movieId || data?.results?.[0]?.id}
             changeMovieId={changeMovieId}
           />

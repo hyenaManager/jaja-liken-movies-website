@@ -23,11 +23,8 @@ export default function Navbar({ toggleNav }) {
           <li className={"  hover:text-red-300 p-2  text-sm "}>
             <Link to={"/"}>main</Link>
           </li>
-          <li
-            onClick={() => notAvailableLink()}
-            className={"  hover:text-red-300 p-2  text-sm "}
-          >
-            wishlist
+          <li className={"  hover:text-red-300 p-2  text-sm "}>
+            <Link to={"wishlist"}>wishlist</Link>
           </li>
           <li
             onClick={() => notAvailableLink()}
@@ -95,12 +92,12 @@ export function SmallNavbar({ toggleNav }) {
             <Link to={"/"}>main</Link>
           </li>
           <li
-            onClick={notAvailableLink}
+            onClick={toggleNav}
             className={
               "  hover:text-red-300 p-3 mt-2  text-lg  cursor-pointer "
             }
           >
-            favourite
+            <Link to={"wishlist"}>wishlist</Link>
           </li>
           <li
             onClick={notAvailableLink}

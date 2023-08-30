@@ -2,6 +2,8 @@ import {
   faClock,
   faClosedCaptioning,
   faEllipsis,
+  faMinus,
+  faPerson,
   faPlay,
   faPlus,
   faStar,
@@ -16,13 +18,21 @@ import SuggestMovies from "./suggestions";
 import TrailerVideo from "./trailerVideo";
 import { useQuery } from "@tanstack/react-query";
 import { fetchExactMovie } from "../../apis/getApi";
-export default function Head({ movieId, changeMovieId }) {
+import { useNavigate } from "react-router-dom";
+export default function Head({
+  movieId,
+  changeMovieId,
+  wishlist,
+  addToWishlist,
+  removeFromWishlist,
+}) {
   const [readMoreOverview, setReadMoreOverview] = useState(false);
   const [overviewWidth, setOverviewWidth] = useState(null);
   const [watchTrailer, setWatchTrailer] = useState(false);
   const elementRef = useRef(null);
   const [imageIsLoaded, setImageIsLoaded] = useState(false);
   const [backDropImageLoaded, setBackDropImageLoaded] = useState(false);
+  const navigate = useNavigate();
   const link = "https://image.tmdb.org/t/p/original/";
 
   const { status, data } = useQuery({
@@ -38,6 +48,31 @@ export default function Head({ movieId, changeMovieId }) {
       setOverviewWidth(height);
     }
   }, [data]);
+  function isAlreadyExistInWL() {
+    const boolean = wishlist.find((movie) => movie.id === movieId);
+
+    return !!boolean;
+  }
+  console.log("detail wishlist " + movieId, wishlist);
+  const wishlistButton =
+    data &&
+    (isAlreadyExistInWL() ? (
+      <button
+        onClick={() => removeFromWishlist(data)}
+        className=" mr-5 p-3 pr-4 pl-4 hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg"
+      >
+        <FontAwesomeIcon icon={faMinus} className="mr-2 text-white text-lg" />
+        <span className=" text-white">wishlist</span>
+      </button>
+    ) : (
+      <button
+        onClick={() => addToWishlist(data)}
+        className=" mr-5 p-3 pr-4 pl-4 hover:bg-green-700 bg-green-500 text-white rounded-3xl text-lg"
+      >
+        <FontAwesomeIcon icon={faPlus} className="mr-2 text-white text-lg" />
+        <span className=" text-white">wishlist</span>
+      </button>
+    ));
   useEffect(() => {
     const source = link + data?.backdrop_path;
     const img = new Image();
@@ -194,12 +229,17 @@ export default function Head({ movieId, changeMovieId }) {
                   <span className=" text-white">watch trailer</span>
                 </button>
                 {/* add to wishlist button */}
+                {wishlistButton}
+                {/* check casters */}
                 <button
-                  // onClick={() => setWatchTrailer(!watchTrailer)}
-                  className=" mr-5 p-3 pr-4 pl-4 hover:bg-green-700 bg-green-500 text-white rounded-3xl text-lg"
+                  onClick={() => navigate(`/search/${movieId}`)}
+                  className=" mr-5 p-3 pr-4 pl-4 hover:bg-yellow-700 bg-yellow-500 text-white rounded-3xl text-lg"
                 >
-                  <FontAwesomeIcon icon={faPlus} className="mr-2 text-white" />
-                  <span className=" text-white">wishlist</span>
+                  <FontAwesomeIcon
+                    icon={faPerson}
+                    className="mr-2 text-white"
+                  />
+                  <span className=" text-white">casters</span>
                 </button>
               </div>
             )}
