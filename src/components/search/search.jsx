@@ -96,7 +96,7 @@ function MoviePoster({ movie }) {
       ></div>
       {imageNotFound && (
         <div
-          className={`w-full h-full bg-opacity-50 rounded-md bg-blue-900 absolute flex flex-col justify-center items-center`}
+          className={`w-full h-full bg-opacity-10 rounded-md bg-blue-900 absolute flex flex-col justify-center items-center`}
         >
           <span className=" font-kanit text-lg text-white ">{movie.title}</span>
           <span className=" font-kanit text-lg text-white ">
