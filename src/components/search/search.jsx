@@ -7,9 +7,9 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import SkeletonBar, { SkeletonColumn } from "../../skeletons/skeletons";
 
-export default function Search() {
-  const [searchName, setSearchName] = useState("avenger");
-  const [inputText, setInputText] = useState("");
+export default function Search({ defaultSearchText, changeDefaultSearchText }) {
+  const [searchName, setSearchName] = useState(defaultSearchText);
+  const [inputName, setInputName] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const { data, status, error, isFetching } = useQuery({
@@ -17,20 +17,29 @@ export default function Search() {
     queryFn: () => fetchMovieByName(searchName),
     keepPreviousData: true,
   });
+
   return (
-    <div className=" bg-slate-800 pt-14 mt-3">
+    <div
+      className=" pt-14 mt-3 bg-no-repeat h-full "
+      style={{ backgroundImage: "url('public/bgBlue.jpg')" }}
+    >
       <div className="flex justify-center items-center m-0 h-full">
         <input
           type="text"
-          value={searchName}
+          value={inputName}
           autoComplete="on"
-          onChange={(e) => setSearchName(e.target.value)}
+          onChange={(e) => {
+            setInputName(e.target.value);
+          }}
           className=" rounded-sm p-1 focus:outline-none focus:shadow-outline mr-2 "
           placeholder="search movies.."
         />
         <FontAwesomeIcon
-          onClick={() => setSearchName(inputText)}
           icon={faSearch}
+          onClick={() => {
+            setSearchName(inputName);
+            changeDefaultSearchText(inputName);
+          }}
           className=" cursor-pointer text-slate-300 text-xl hover:text-green-400"
         />
       </div>
@@ -43,13 +52,13 @@ export default function Search() {
           Sorry we could'nt find any movie match with {searchName} ☹️ 
         </div>
       )}
-      <div className=" grid ph-size:grid-cols-2 sm:grid-cols-4 lg:grid-cols-6  gap-8 p-10 ">
-        {error && <div> there is some error {error.message}</div>}
+      <div className=" h-full w-full grid ph-size:grid-cols-2 sm:grid-cols-4 lg:grid-cols-6  gap-8 p-10 ">
+        {/* {error && <div> there is some error {error.message}</div>} */}
         {status === "loading"
           ? [1, 2, 3, 4, 5, 6].map((number) => (
               <SkeletonColumn key={number} percent={"300px"} />
             ))
-          : data?.results.map((movie) => (
+          : data?.results?.map((movie) => (
               <MoviePoster movie={movie} key={movie.id} />
             ))}
       </div>
@@ -83,11 +92,11 @@ function MoviePoster({ movie }) {
       {/* place holder image */}
 
       <div
-        className={` bg-opacity-50 rounded-md bg-red-900 absolute w-full h-full`}
+        className={` bg-opacity-50 rounded-md bg-blue-900 absolute w-full h-full`}
       ></div>
       {imageNotFound && (
         <div
-          className={`w-full h-full bg-opacity-50 rounded-md bg-red-900 absolute flex flex-col justify-center items-center`}
+          className={`w-full h-full bg-opacity-50 rounded-md bg-blue-900 absolute flex flex-col justify-center items-center`}
         >
           <span className=" font-kanit text-lg text-white ">{movie.title}</span>
           <span className=" font-kanit text-lg text-white ">

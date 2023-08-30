@@ -10,12 +10,14 @@ const Detail = lazy(() => import("./components/search/detail"));
 const Navbar = lazy(() => import("./components/main/navbar"));
 function App() {
   const [smallNav, setSmallNav] = useState(false);
+  const [defaultSearchText, setDefaultSearchText] = useState("avenger");
   function toggleNav() {
     setSmallNav(!smallNav);
   }
+  console.log("change to ", defaultSearchText);
   return (
     <>
-      <div className="relative ph-size:max-w-screen-generalSize sm:max-w-none bg-slate-800">
+      <div className="relative ph-size:max-w-screen-generalSize sm:max-w-none bg-slate-800 ">
         <Navbar toggleNav={toggleNav} />
         <Outlet />
       </div>
@@ -36,7 +38,10 @@ function App() {
           path="/search"
           element={
             <Suspense fallback={<div>Loading......</div>}>
-              <Search />
+              <Search
+                defaultSearchText={defaultSearchText}
+                changeDefaultSearchText={setDefaultSearchText}
+              />
             </Suspense>
           }
         />

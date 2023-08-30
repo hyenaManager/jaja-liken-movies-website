@@ -13,7 +13,17 @@ export default function CatagoryMovies({
   movieCatagory,
 }) {
   const [catagoryName, setCatagoryName] = useState("Popular");
-
+  const [bgImageIsLoaded, setBgImageIsLoaded] = useState(false);
+  const bgRealImage = "public/bgLarge.jpg";
+  const bgPlaceholderImage = "public/bgMin.jpg";
+  useEffect(() => {
+    const source = bgRealImage;
+    const img = new Image();
+    img.src = source;
+    img.onLoad = () => {
+      setBgImageIsLoaded(source);
+    };
+  });
   function handleCatagory(type, catagory) {
     changeCatagory(type);
     setCatagoryName(catagory);
@@ -45,7 +55,14 @@ export default function CatagoryMovies({
           </div>
         )}
       </div>
-      <div className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6  font-head ph-size:p-1 sm:p-3">
+      <div
+        className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6  font-head ph-size:p-1 sm:p-3"
+        style={{
+          backgroundImage: bgImageIsLoaded
+            ? `url(${bgRealImage})`
+            : `url(${bgPlaceholderImage})`,
+        }}
+      >
         {moviesList}
         {status === "loading" && skeletonImgs}
       </div>
