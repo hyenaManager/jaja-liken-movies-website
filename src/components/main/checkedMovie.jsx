@@ -32,6 +32,7 @@ export default function Head({
   const elementRef = useRef(null);
   const [imageIsLoaded, setImageIsLoaded] = useState(false);
   const [backDropImageLoaded, setBackDropImageLoaded] = useState(false);
+  const [isAnimate, setIsAnimate] = useState(false);
   const navigate = useNavigate();
   const link = "https://image.tmdb.org/t/p/original/";
 
@@ -58,16 +59,32 @@ export default function Head({
     data &&
     (isAlreadyExistInWL() ? (
       <button
-        onClick={() => removeFromWishlist(data)}
+        onClick={() => {
+          removeFromWishlist(data);
+          setIsAnimate(false);
+        }}
         className=" mr-5 p-3 pr-4 pl-4 hover:bg-red-700 bg-red-500 text-white rounded-3xl text-lg"
       >
         <FontAwesomeIcon icon={faMinus} className="mr-2 text-white text-lg" />
         <span className=" text-white">wishlist</span>
+        {isAnimate && (
+          <motion.div
+            initial={{ opacity: 1, y: "-6vh" }}
+            animate={{ y: "-15vh", opacity: 0 }}
+            transition={{ duration: 1.9 }}
+            className=" absolute text-2xl"
+          >
+            ❤️
+          </motion.div>
+        )}
       </button>
     ) : (
       <button
-        onClick={() => addToWishlist(data)}
-        className=" mr-5 p-3 pr-4 pl-4 hover:bg-green-700 bg-green-500 text-white rounded-3xl text-lg"
+        onClick={() => {
+          addToWishlist(data);
+          setIsAnimate(true);
+        }}
+        className=" mr-5 p-3 pr-4 pl-4 hover:bg-green-700 bg-green-500 text-white rounded-3xl text-lg relative"
       >
         <FontAwesomeIcon icon={faPlus} className="mr-2 text-white text-lg" />
         <span className=" text-white">wishlist</span>
