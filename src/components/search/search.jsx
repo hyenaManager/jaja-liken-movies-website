@@ -20,7 +20,7 @@ export default function Search({ defaultSearchText, changeDefaultSearchText }) {
 
   return (
     <div
-      className=" pt-14 mt-3 bg-no-repeat h-full "
+      className=" pt-14 mt-3 bg-no-repeat h-full bg-auto"
       style={{ backgroundImage: "url('bgBlue.jpg')" }}
     >
       <div className="flex justify-center items-center m-0 h-full">

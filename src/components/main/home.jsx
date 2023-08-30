@@ -31,7 +31,7 @@ function Main({ wishlist, addToWishlist, removeFromWishlist }) {
   return (
     <>
       <div className=" LikenMovieApp relative ph-size:max-w-screen-generalSize sm:max-w-none">
-        <div key={movieId} className=" pt-3  bg-red-700" ref={headRef}>
+        <div key={movieId} className=" pt-3" ref={headRef}>
           <Head
             wishlist={wishlist}
             addToWishlist={addToWishlist}

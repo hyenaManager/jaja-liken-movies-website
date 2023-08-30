@@ -68,25 +68,25 @@ function MoviePoster({ movie, removeFromWishlist }) {
 
       {/* Check movie button */}
       {isHover && (
-        <div className=" absolute top-0 right-0 left-0 felx justify-start z-20 p-1">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1.2 }}
-            onClick={() => removeFromWishlist(movie)}
-            className=" p-1 pr-2 pl-2 mr-4 bg-red-400 text-white rounded-md text-md drop-shadow-xl"
-          >
-            remove
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1.2 }}
-            className=" p-1 pr-2 pl-2 bg-green-400 text-white rounded-md text-md drop-shadow-xl"
-          >
-            <Link to={`/search/${movie.id}`} className="text-white">
-              Check
-            </Link>
-          </motion.button>
-        </div>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1.2 }}
+          onClick={() => removeFromWishlist(movie)}
+          className=" z-20  p-1 pr-2 pl-2 bg-red-400 text-white rounded-md text-md drop-shadow-xl absolute top-3 right-3"
+        >
+          remove
+        </motion.button>
+      )}
+      {isHover && (
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1.2 }}
+          className=" z-20 p-1 pr-2 pl-2 bg-green-400 text-white rounded-md text-md drop-shadow-xl absolute top-3 left-3"
+        >
+          <Link to={`/search/${movie.id}`} className="text-white">
+            Check
+          </Link>
+        </motion.button>
       )}
     </motion.div>
   );

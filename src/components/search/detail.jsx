@@ -85,7 +85,8 @@ export default function Detail({
     <>
       <div
         className={
-          "headParentDiv relative  mt-10 pt-4 pb-5" + (!data && " bg-slate-300")
+          "headParentDiv relative  mt-10 pt-4 pb-5 bg-no-repeat bg-auto" +
+          (!data && " bg-slate-300")
         }
         style={{
           backgroundImage: backDropImageLoaded
