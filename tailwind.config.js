@@ -21,8 +21,12 @@ export default {
     },
     minHeight:{
       'normal':'400px',
+      'fiveHundred':'500px',
       'imgHeight':'250px',
-      'hundred':'100px'
+      'hundred':'100px',
+      'threeHundred':'300px',
+      'sixHundred':'600px',
+      'fullvh':'100vh',
     },
     maxHeight:{
       'normal':'400px',

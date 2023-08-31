@@ -44,14 +44,14 @@ export default function CatagoryMovies({
   ));
   return (
     <>
-      <div className=" selectionNav flex justify-start p-2 ph-size:max-w-screen-generalSize sm:max-w-none">
+      <div className=" selectionNav flex justify-start p-2 ph-size:max-w-screen-generalSize sm:max-w-none  ">
         <SelectionHeadDropdown
           catagoryName={catagoryName}
           handleCatagory={handleCatagory}
         />
       </div>
       <div
-        className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6  font-head ph-size:p-1 sm:p-3"
+        className="selectionImgs grid ph-size:gap-3 sm:gap-8 ph-size:grid-cols-2 sm:grid-cols-2 sm:min-h-fiveHundred md:grid-cols-4 lg:grid-cols-6  font-head ph-size:p-1 sm:p-3"
         style={{
           backgroundImage: bgImageIsLoaded
             ? `url(${bgRealImage})`

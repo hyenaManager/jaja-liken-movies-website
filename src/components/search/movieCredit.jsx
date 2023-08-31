@@ -92,7 +92,7 @@ function Profile({ profile }) {
         src={
           profile.profile_path
             ? link + profile.profile_path
-            : "/public/defaultProfile.jpeg"
+            : "/defaultProfile.jpeg"
         }
         onLoad={() => setImageIsLoaded(true)}
         onError={() => setImageNotAvailable(true)}

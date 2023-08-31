@@ -18,7 +18,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchExactMovie } from "../../apis/getApi";
 import { useParams } from "react-router-dom";
 import TrailerVideo from "../main/trailerVideo";
-import { SkeletonColumn } from "../../skeletons/skeletons";
 import Credits from "./movieCredit";
 
 export default function Detail({

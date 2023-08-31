@@ -88,7 +88,7 @@ function Movie({ movie, changeMovieId }) {
   return (
     <motion.div
       key={movie.original_title}
-      className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal p-4 relative "
+      className="img-container ph-size:w-40 ph-size:max-h-small sm:w-64 sm:max-h-normal sm:min-h-threeHundred p-4 relative "
     >
       <motion.img
         initial={{ opacity: 0 }}

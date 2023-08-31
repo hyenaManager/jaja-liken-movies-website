@@ -20,7 +20,7 @@ export default function Search({ defaultSearchText, changeDefaultSearchText }) {
 
   return (
     <div
-      className=" pt-14 mt-3 bg-no-repeat h-full bg-auto"
+      className=" pt-14 mt-3 bg-no-repeat h-full bg-auto min-h-fullvh"
       style={{ backgroundImage: "url('bgBlue.jpg')" }}
     >
       <div className="flex justify-center items-center m-0 h-full">
@@ -92,11 +92,11 @@ function MoviePoster({ movie }) {
       {/* place holder image */}
 
       <div
-        className={` bg-opacity-50 rounded-md bg-blue-900 absolute w-full h-full`}
+        className={` bg-opacity-80 rounded-md bg-blue-900 absolute w-full h-full`}
       ></div>
       {imageNotFound && (
         <div
-          className={`w-full h-full bg-opacity-10 rounded-md bg-blue-900 absolute flex flex-col justify-center items-center`}
+          className={`w-full h-full bg-opacity-80 rounded-md bg-blue-900 absolute flex flex-col justify-center items-center`}
         >
           <span className=" font-kanit text-lg text-white ">{movie.title}</span>
           <span className=" font-kanit text-lg text-white ">

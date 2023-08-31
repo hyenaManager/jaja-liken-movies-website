@@ -6,7 +6,7 @@ export default function WishList({ wishlist, removeFromWishlist }) {
   return (
     <>
       <div
-        className=" pt-14 mt-3 bg-no-repeat h-full "
+        className=" pt-14 mt-3 bg-no-repeat min-h-fullvh "
         style={{ backgroundImage: "url('bgBlue.jpg')" }}
       >
         <div className=" h-full w-full grid ph-size:grid-cols-2 sm:grid-cols-4 lg:grid-cols-6  gap-8 p-10 ">
