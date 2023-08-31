@@ -1,14 +1,8 @@
-import {
-  faArrowLeft,
-  faArrowRight,
-  faPause,
-  faPlay,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-import { ImgSkeleton } from "../../skeletons/skeletons";
 
 function TrailerVideo({ toggleVideo, movieSource }) {
   const [trailerVideoIndex, SetTrailerVideoIndex] = useState(0);

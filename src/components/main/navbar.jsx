@@ -1,13 +1,10 @@
 import { faBars, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar({ toggleNav }) {
-  const [selectedNav, setSelectedNav] = useState("main");
-  const bottomBarClass = " border-b-2 border-b-red-600";
-
   function notAvailableLink() {
     return alert("not available right now 😶");
   }

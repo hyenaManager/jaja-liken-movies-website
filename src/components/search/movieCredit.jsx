@@ -80,7 +80,7 @@ export default function Credits({ movieId }) {
 
 function Profile({ profile }) {
   const [imageIsLoaded, setImageIsLoaded] = useState(false);
-  const [imageNotAvailable, setImageNotAvailable] = useState(false);
+
   const link = "https://image.tmdb.org/t/p/original";
 
   return (
@@ -95,7 +95,6 @@ function Profile({ profile }) {
             : "/defaultProfile.jpeg"
         }
         onLoad={() => setImageIsLoaded(true)}
-        onError={() => setImageNotAvailable(true)}
         className=" w-full h-full cursor-grab pointer-events-none relative"
       />
       {/* <div className=" text-lg absolute w-full h-full bg-opacity-50 rounded-md bg-red-900 flex justify-center items-center"></div>

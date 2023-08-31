@@ -1,4 +1,4 @@
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState } from "react";
 import Head from "./checkedMovie";
 import CatagoryMovies from "./catagoryMovie";
 import { useQuery } from "@tanstack/react-query";

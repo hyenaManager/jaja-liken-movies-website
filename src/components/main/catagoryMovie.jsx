@@ -1,6 +1,6 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SkeletonColumn } from "/src/skeletons/skeletons";
 import { motion } from "framer-motion";
@@ -14,8 +14,8 @@ export default function CatagoryMovies({
 }) {
   const [catagoryName, setCatagoryName] = useState("Popular");
   const [bgImageIsLoaded, setBgImageIsLoaded] = useState(false);
-  const bgRealImage = "bgLarge.jpg";
-  const bgPlaceholderImage = "bgMin.jpg";
+  const bgRealImage = "/bgLarge.jpg";
+  const bgPlaceholderImage = "/bgMin.jpg";
   useEffect(() => {
     const source = bgRealImage;
     const img = new Image();

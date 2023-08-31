@@ -12,7 +12,9 @@ export default function WishList({ wishlist, removeFromWishlist }) {
         <div className=" h-full w-full grid ph-size:grid-cols-2 sm:grid-cols-4 lg:grid-cols-6  gap-8 p-10 ">
           {/* {error && <div> there is some error {error.message}</div>} */}
           {wishlist.length === 0 ? (
-            <div className=" text-4xl">There is no movie you add....</div>
+            <div className=" text-4xl flex justify-center items-center font-kanit text-white">
+              There is no wishlist movie you add....
+            </div>
           ) : (
             wishlist.map((movie) => (
               <MoviePoster
@@ -81,7 +83,7 @@ function MoviePoster({ movie, removeFromWishlist }) {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
-          className=" z-20 p-1 pr-2 pl-2 bg-green-400 text-white rounded-md text-md drop-shadow-xl absolute top-3 left-3"
+          className=" z-20 p-1 pr-2 pl-2 bg-green-400 text-white rounded-md text-md drop-shadow-xl absolute ph-size:bottom-3 sm:top-3 right-3"
         >
           <Link to={`/search/${movie.id}`} className="text-white">
             Check
